@@ -1,5 +1,6 @@
 package com.fatlab.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,10 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 public class RA_TIPO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,14 +20,21 @@ public class RA_TIPO implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
-    public String RA;
+    @JsonIgnore
+    @OneToOne()
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
-    @Enumerated(EnumType.STRING)
+    @Column(unique = true)
+    private String ra;
+
+    @Enumerated(value = EnumType.STRING)
     public Tipo tipo;
 
     public RA_TIPO(String RA, Tipo tipo) {
-        this.RA = RA;
+        this.ra = RA;
         this.tipo = tipo;
     }
+
+
 }

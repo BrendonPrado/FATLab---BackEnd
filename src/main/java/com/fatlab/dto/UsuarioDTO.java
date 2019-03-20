@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class UsuarioDTO implements Serializable{
 
@@ -18,5 +20,5 @@ public class UsuarioDTO implements Serializable{
 	private String nome;
 	private String email;
 	private String senha;
-	private String RA;
+	private String ra;
 }

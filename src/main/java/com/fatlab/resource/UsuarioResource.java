@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fatlab.domain.Usuario;
 import com.fatlab.service.UsuarioService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value="/usuarios")
-public class AlunoResource {
+public class UsuarioResource {
 	
 	@Autowired
 	private UsuarioService service;
@@ -26,11 +29,14 @@ public class AlunoResource {
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Usuario> save(@RequestBody UsuarioDTO usuarioDTO){
-		Usuario usuario = service.fromDTO(usuarioDTO);
-		usuario = service.save( usuario );
+	public ResponseEntity<Void> save(@RequestBody UsuarioDTO usuarioDTO){
 
-		return ResponseEntity.ok().body(usuario);
+		Usuario usuario = service.saveFromDTO( usuarioDTO );
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(usuario.getId()).toUri();
+
+		return ResponseEntity.created( uri ).build();
 	}
 
 

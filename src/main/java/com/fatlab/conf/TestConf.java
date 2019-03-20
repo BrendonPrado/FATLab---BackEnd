@@ -14,7 +14,7 @@ import com.fatlab.service.DBService;
 @Profile("test")
 public class TestConf {
 	@Autowired
-	DBService service;
+	private DBService service;
 
 	    @Bean
 	    public boolean instantiateDatabase() throws ParseException {

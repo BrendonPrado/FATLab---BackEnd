@@ -21,10 +21,9 @@ public class Aluno extends Usuario{
 	private static final long serialVersionUID = 1L;
 
 
-	@OneToOne
+	@OneToOne()
 	@JoinColumn(name = "ra_id")
-	@Column(unique = true)
-	private RA_TIPO RA;
+	private RA_TIPO ra;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -35,9 +34,13 @@ public class Aluno extends Usuario{
 
 	public Aluno(String nome, String email, String senha, RA_TIPO rA) {
 		super(nome, email, senha);
-		RA = rA;
+		ra = rA;
 	}
-	
+
+	public Aluno(String nome, String email, String senha) {
+		super(nome, email, senha);
+	}
+
 	public void addMateria(Materia materia){
 		this.materias.add(materia);
 	}
