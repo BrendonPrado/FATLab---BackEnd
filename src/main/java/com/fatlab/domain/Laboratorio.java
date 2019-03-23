@@ -30,13 +30,13 @@ public class Laboratorio implements Serializable{
 	@GeneratedValue
 	private Integer id;
 	
-	private Integer numero;
+	private String numero;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="lab")
 	private Set<Reserva> reservas = new HashSet<>();
 
-	public Laboratorio(Integer numero) {
+	public Laboratorio(String numero) {
 		super();
 		this.numero = numero;
 	}

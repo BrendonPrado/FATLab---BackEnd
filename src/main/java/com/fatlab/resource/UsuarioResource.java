@@ -26,7 +26,7 @@ public class UsuarioResource {
 		Usuario usuario = service.find(id);
 		
 		return ResponseEntity.ok().body(usuario);
-	}
+	}	
 
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> save(@RequestBody UsuarioDTO usuarioDTO){

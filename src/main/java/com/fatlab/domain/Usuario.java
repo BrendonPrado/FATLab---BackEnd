@@ -2,11 +2,7 @@ package com.fatlab.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -23,11 +19,12 @@ public abstract class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	private String nome;
 	private String email;
+	@Column(unique = true)
 	private String senha;
 
 
@@ -56,8 +53,9 @@ public abstract class Usuario implements Serializable {
 			return false;
 		return true;
 	}
-	public Usuario(String nome, String email, String senha) {
+	public Usuario(Integer id,String nome, String email, String senha) {
 		super();
+		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;

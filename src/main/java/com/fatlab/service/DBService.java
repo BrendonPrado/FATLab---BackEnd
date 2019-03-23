@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.fatlab.domain.*;
+import com.fatlab.domain.enums.Tipo;
 import com.fatlab.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,24 +32,27 @@ public class DBService {
 	@Autowired
 	private RA_TIPORepository ra_tipoRepository;
 
+	@Autowired
+	private HoraService horaService;
+
 
 	public void  instantiateTestDatabase() {
 
-		RA_TIPO r1 = new RA_TIPO("829829289",Tipo.PROFESSOR);
+		RA_TIPO r1 = new RA_TIPO("829829289", Tipo.PROFESSOR);
 		RA_TIPO r2 = new RA_TIPO("295467890",Tipo.ALUNO);
 		RA_TIPO r3 = new RA_TIPO("123456789",Tipo.ALUNO );
 
-		Aluno a1 = new Aluno("Joao","j@g.com","batata");
+		Aluno a1 = new Aluno(null,"Joao","j@g.com","batata");
 		
-		Professor prof = new Professor("jao","ao@g.com","batata");
+		Professor prof = new Professor(null,"jao","ao@g.com","batata");
 
 
 
 		Materia materia = new Materia("Algoritmos",prof,"A");
 		
-		Laboratorio lab = new Laboratorio(301);
+		Laboratorio lab = new Laboratorio("301");
 		
-		HorarioComecoFimAula horarioComecoFimAula = new HorarioComecoFimAula("Diurno",3); 
+		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios( 3,"Diurno" );
 		
 		Reserva reserva = new Reserva(new Date(),lab, horarioComecoFimAula, materia);
 

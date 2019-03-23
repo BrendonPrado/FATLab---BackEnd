@@ -30,13 +30,13 @@ public class Professor extends Usuario{
 	@OneToMany(mappedBy="professor")
 	private Set<Materia> materias = new HashSet<>() ;
 
-	public Professor(String nome, String email, String senha, RA_TIPO rA) {
-		super(nome, email, senha);
+	public Professor(Integer id,String nome, String email, String senha, RA_TIPO rA) {
+		super(id,nome, email, senha);
 		ra = rA;
 	}
 
-	public Professor(String nome, String email, String senha) {
-		super(nome, email, senha);
+	public Professor(Integer id,String nome, String email, String senha) {
+		super(id,nome, email, senha);
 	}
 
 

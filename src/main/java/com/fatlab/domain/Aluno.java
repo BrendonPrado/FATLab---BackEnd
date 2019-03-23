@@ -32,13 +32,13 @@ public class Aluno extends Usuario{
 	inverseJoinColumns=@JoinColumn(name="materia_id"))
 	private Set<Materia> materias= new HashSet<>();
 
-	public Aluno(String nome, String email, String senha, RA_TIPO rA) {
-		super(nome, email, senha);
+	public Aluno(Integer id,String nome, String email, String senha, RA_TIPO rA) {
+		super(id,nome, email, senha);
 		ra = rA;
 	}
 
-	public Aluno(String nome, String email, String senha) {
-		super(nome, email, senha);
+	public Aluno(Integer id,String nome, String email, String senha) {
+		super(id,nome, email, senha);
 	}
 
 	public void addMateria(Materia materia){

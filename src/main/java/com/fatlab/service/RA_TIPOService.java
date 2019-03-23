@@ -19,4 +19,5 @@ public class RA_TIPOService {
     public RA_TIPO findByRaIs(String ra) {
         return repo.findByRaIs( ra );
     }
+
 }

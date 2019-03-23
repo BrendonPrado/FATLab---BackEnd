@@ -1,6 +1,7 @@
 package com.fatlab.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fatlab.domain.enums.Tipo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

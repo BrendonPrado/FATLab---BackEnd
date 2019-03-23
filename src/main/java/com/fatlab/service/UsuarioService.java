@@ -4,6 +4,7 @@ package com.fatlab.service;
 import java.util.Optional;
 
 import com.fatlab.domain.*;
+import com.fatlab.domain.enums.Tipo;
 import com.fatlab.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,9 @@ public class UsuarioService {
 		RA_TIPO ra = ra_tipoService.findByRaIs( usuarioDTO.getRa() );
 		System.out.println(ra.getTipo());
 		if(ra.getTipo().equals( Tipo.ALUNO )){
-			 usuario = new Aluno(usuarioDTO.getNome(),usuarioDTO.getEmail(),usuarioDTO.getSenha() ,ra);
+			 usuario = new Aluno(null,usuarioDTO.getNome(),usuarioDTO.getEmail(),usuarioDTO.getSenha() ,ra);
 		}else {
-			 usuario = new Professor(usuarioDTO.getNome(),usuarioDTO.getEmail(),usuarioDTO.getSenha() ,ra);
+			 usuario = new Professor(null,usuarioDTO.getNome(),usuarioDTO.getEmail(),usuarioDTO.getSenha() ,ra);
 		}
 		ra.setUsuario(usuario);
 		repo.save( usuario );
