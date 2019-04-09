@@ -4,8 +4,10 @@ package com.fatlab.service;
 import java.util.Optional;
 
 import com.fatlab.domain.*;
-import com.fatlab.domain.enums.Tipo;
 import com.fatlab.dto.UsuarioDTO;
+import com.fatlab.dto.UsuarioNewDTO;
+import com.fatlab.repositories.AlunoRepository;
+import com.fatlab.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,15 @@ import com.fatlab.repositories.UsuarioRepository;
 
 @Service
 public class UsuarioService {
+
 	@Autowired
 	private UsuarioRepository repo;
 
 	@Autowired
-	RA_TIPOService ra_tipoService;
+	private AlunoRepository alunoRepository;
+
+	@Autowired
+	private ProfessorRepository professorRepository;
 
 	public Usuario find(Integer id) {
 		Optional<Usuario> aluno = repo.findById(id);
@@ -30,18 +36,38 @@ public class UsuarioService {
 
 
 	public Usuario saveFromDTO(UsuarioDTO usuarioDTO) {
-		Usuario usuario = null;
-		RA_TIPO ra = ra_tipoService.findByRaIs( usuarioDTO.getRa() );
-		System.out.println(ra.getTipo());
-		if(ra.getTipo().equals( Tipo.ALUNO )){
-			 usuario = new Aluno(null,usuarioDTO.getNome(),usuarioDTO.getEmail(),usuarioDTO.getSenha() ,ra);
-		}else {
-			 usuario = new Professor(null,usuarioDTO.getNome(),usuarioDTO.getEmail(),usuarioDTO.getSenha() ,ra);
-		}
-		ra.setUsuario(usuario);
-		repo.save( usuario );
-		ra_tipoService.save( ra);
-		return usuario;
+		Usuario usuario = fromDTO(usuarioDTO);
+		return save(usuario);
 	}
 
+
+	private Usuario fromDTO(UsuarioDTO usuarioDTO){
+		if (usuarioDTO.getTipo().equals("Aluno")){
+			return new Aluno(null,null,null,null,usuarioDTO.isAdmin(),usuarioDTO.getMatricula());
+		}else if(usuarioDTO.getTipo().equals("Professor")){
+			return new Professor(null,null,null,null,usuarioDTO.isAdmin(),usuarioDTO.getMatricula());
+		}else{
+			throw new RuntimeException("Deve ser um tipo de usuário valido");
+		}
+	}
+
+	public Usuario saveFromNewDTO(UsuarioNewDTO usuarioNewDTO) {
+		Usuario usuario = fromNewDTO(usuarioNewDTO);
+		return save(usuario);
+	}
+
+	private Usuario fromNewDTO(UsuarioNewDTO usuarioNewDTO) {
+		Usuario usuario = alunoRepository.findAlunoByRa(usuarioNewDTO.getMatricula());
+		if(usuario == null){
+			usuario = professorRepository.findProfessorByMatricula(usuarioNewDTO.getMatricula());
+			if(usuario == null){
+				throw new RuntimeException("Usuario não encontrado!Comunique um admin!");
+			}
+		}
+		usuario.setNome(usuarioNewDTO.getNome());
+		usuario.setEmail(usuarioNewDTO.getEmail());
+		usuario.setSenha(usuarioNewDTO.getSenha());
+
+		return usuario;
+	}
 }

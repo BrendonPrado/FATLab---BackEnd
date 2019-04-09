@@ -17,14 +17,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @JsonTypeName("Aluno")
-public class Aluno extends Usuario{
+public class Aluno extends Usuario {
 	private static final long serialVersionUID = 1L;
 
 
-	@OneToOne()
-	@JoinColumn(name = "ra_id")
-	private RA_TIPO ra;
-	
+	@Column(unique = true)
+	private String ra;
+
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name="Alunos_Materias",
@@ -32,13 +31,10 @@ public class Aluno extends Usuario{
 	inverseJoinColumns=@JoinColumn(name="materia_id"))
 	private Set<Materia> materias= new HashSet<>();
 
-	public Aluno(Integer id,String nome, String email, String senha, RA_TIPO rA) {
-		super(id,nome, email, senha);
-		ra = rA;
-	}
 
-	public Aluno(Integer id,String nome, String email, String senha) {
-		super(id,nome, email, senha);
+	public Aluno(Integer id, String nome, String email, String senha, boolean admin, String RA) {
+		super(id, nome, email, senha, admin);
+		this.ra = RA;
 	}
 
 	public void addMateria(Materia materia){

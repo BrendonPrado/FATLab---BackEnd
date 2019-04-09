@@ -22,23 +22,16 @@ public class Professor extends Usuario{
 	private static final long serialVersionUID = 1L;
 
 
-	@OneToOne()
-	@JoinColumn(name = "ra_id")
-	private RA_TIPO ra;
+	private String matricula;
 
 	@JsonIgnore
 	@OneToMany(mappedBy="professor")
 	private Set<Materia> materias = new HashSet<>() ;
 
-	public Professor(Integer id,String nome, String email, String senha, RA_TIPO rA) {
-		super(id,nome, email, senha);
-		ra = rA;
+	public Professor(Integer id, String nome, String email, String senha, boolean admin, String matricula) {
+		super(id, nome, email, senha, admin);
+		this.matricula = matricula;
 	}
-
-	public Professor(Integer id,String nome, String email, String senha) {
-		super(id,nome, email, senha);
-	}
-
 
 	public void addMateria(Materia materia){
 		this.materias.add(materia);

@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.fatlab.domain.*;
 import com.fatlab.domain.enums.Tipo;
+import com.fatlab.dto.UsuarioDTO;
+import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,51 +32,48 @@ public class DBService {
 
 
 	@Autowired
-	private RA_TIPORepository ra_tipoRepository;
-
-	@Autowired
 	private HoraService horaService;
 
+	@Autowired
+	private UsuarioService usuarioService;
 
 	public void  instantiateTestDatabase() {
 
-		RA_TIPO r1 = new RA_TIPO("829829289", Tipo.PROFESSOR);
-		RA_TIPO r2 = new RA_TIPO("295467890",Tipo.ALUNO);
-		RA_TIPO r3 = new RA_TIPO("123456789",Tipo.ALUNO );
+		Aluno a1 = new Aluno(null,"Joao","j@g.com","batata",false,"62616616126616");
 
-		Aluno a1 = new Aluno(null,"Joao","j@g.com","batata");
-		
-		Professor prof = new Professor(null,"jao","ao@g.com","batata");
+		Professor prof = new Professor(null,"jao","ao@g.com","batata",true,"327636267");
 
 
 
 		Materia materia = new Materia("Algoritmos",prof,"A");
-		
+
 		Laboratorio lab = new Laboratorio("301");
-		
+
 		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios( 3,"Diurno" );
-		
+
 		Reserva reserva = new Reserva(new Date(),lab, horarioComecoFimAula, materia);
 
 		usuarioRepository.saveAll(Arrays.asList(a1,prof));
-		r1.setUsuario( prof );
-		r2.setUsuario( a1 );
 
-		ra_tipoRepository.saveAll( Arrays.asList( r1,r2,r3) );
 
-		prof.setRa( r1 );
-		a1.setRa( r2 );
+
 		materia.addReserva(reserva);
 		prof.addMateria(materia);
 		a1.addMateria(materia);
 
-		
+
 		materiaRepository.save(materia);
 		usuarioRepository.saveAll(Arrays.asList(a1,prof));
 		horarioComecoFimAulaRepository.save(horarioComecoFimAula);
 		labRepository.save(lab);
 		reservaRepository.save(reserva);
-		
+
+		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Aluno",true);
+		UsuarioNewDTO usuarioNewDTO = new UsuarioNewDTO("Jão","jao@g.com","batata","7162616");
+
+		usuarioService.saveFromDTO(usuarioDTO);
+		usuarioService.saveFromNewDTO(usuarioNewDTO);
+
 
 	}
 }

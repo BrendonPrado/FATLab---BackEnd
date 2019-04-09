@@ -17,8 +17,14 @@ public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 
-	private String nome;
-	private String email;
-	private String senha;
-	private String ra;
+
+	private String matricula;
+	private String tipo;
+	private boolean admin;
+
+	public UsuarioDTO(String matricula, String tipo, boolean admin) {
+		this.matricula = matricula;
+		this.tipo = tipo;
+		this.admin = admin;
+	}
 }

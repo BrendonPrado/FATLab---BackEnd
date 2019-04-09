@@ -2,9 +2,13 @@ package com.fatlab.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +27,14 @@ public abstract class Usuario implements Serializable {
 	private Integer id;
 	
 	private String nome;
-	private String email;
+
 	@Column(unique = true)
+	private String email;
+
 	private String senha;
+
+
+	private boolean admin;
 
 
 	
@@ -53,7 +62,7 @@ public abstract class Usuario implements Serializable {
 			return false;
 		return true;
 	}
-	public Usuario(Integer id,String nome, String email, String senha) {
+	public Usuario(Integer id,String nome, String email, String senha,boolean admin) {
 		super();
 		this.id = id;
 		this.nome = nome;
