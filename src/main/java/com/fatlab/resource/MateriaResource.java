@@ -1,6 +1,7 @@
 package com.fatlab.resource;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,13 @@ public class MateriaResource {
 	private MateriaService service;
 
 	
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<Materia>> findAll(){
+
+		return ResponseEntity.ok().body(service.findAll());
+	}
+
 	@RequestMapping(value="{id}",method=RequestMethod.GET)
 	public ResponseEntity<Materia> find(@PathVariable Integer id){
 		Materia materia = service.find(id);
@@ -65,7 +73,7 @@ public class MateriaResource {
 
 	@RequestMapping(value="/{id}/alunos",method=RequestMethod.GET)
 	public ResponseEntity<Set<Aluno>> findAllMateriaAluno(@PathVariable Integer id){
-		Set<Aluno> alunos = service.findALlMateriaAluno(id);
+		Set<Aluno> alunos = service.findAllMateriaAluno(id);
 		return ResponseEntity.ok().body(alunos);
 	}
 

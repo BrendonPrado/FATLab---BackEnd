@@ -10,6 +10,7 @@ import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.AlunoRepository;
 import com.fatlab.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fatlab.repositories.UsuarioRepository;
@@ -28,6 +29,9 @@ public class UsuarioService {
 
 	@Autowired
 	private MateriaService materiaService;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public Usuario find(Integer id) {
 		Optional<Usuario> aluno = repo.findById(id);
@@ -70,7 +74,7 @@ public class UsuarioService {
 		}
 		usuario.setNome(usuarioNewDTO.getNome());
 		usuario.setEmail(usuarioNewDTO.getEmail());
-		usuario.setSenha(usuarioNewDTO.getSenha());
+		usuario.setSenha(this.encoder.encode(usuarioNewDTO.getSenha()));
 
 		return usuario;
 	}

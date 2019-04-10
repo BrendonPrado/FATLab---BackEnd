@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fatlab.domain.enums.Turno;
 
 import lombok.Getter;
@@ -38,18 +39,17 @@ public class HorarioComecoFimAula implements Serializable{
 	@Enumerated(value = EnumType.STRING)
 	private Turno turno;
 	
-	@Temporal(TemporalType.TIME)
-	private Date horaComeco;
+	private String horaComeco;
 	
-	@Temporal(TemporalType.TIME)
-	private Date horaFim;
+	private String horaFim;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="horarioComecoFimAula")
 	private Set<Reserva> reserva;
 
 
 	
-	public HorarioComecoFimAula(Turno turno,Date horaComeco,Date horaFim) {
+	public HorarioComecoFimAula(Turno turno,String horaComeco,String horaFim) {
 		this.turno = turno;
 		this.horaComeco = horaComeco;
 		this.horaFim = horaFim;

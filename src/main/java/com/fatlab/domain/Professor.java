@@ -1,12 +1,13 @@
 package com.fatlab.domain;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fatlab.domain.enums.Funcao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@JsonTypeName("Professor")
 public class Professor extends Usuario{
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public class Professor extends Usuario{
 	private Set<Materia> materias = new HashSet<>() ;
 
 	public Professor(Integer id, String nome, String email, String senha, boolean admin, String matricula) {
-		super(id, nome, email, senha, admin);
+		super(id, nome, email, senha, admin,Funcao.PROFESSOR);
 		this.matricula = matricula;
 	}
 

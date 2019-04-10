@@ -38,6 +38,7 @@ public class Reserva implements Serializable{
 	@JoinColumn(name="lab_id")
 	private Laboratorio lab;
 	
+	
 	@ManyToOne()
 	@JoinColumn(name="horario_id")
 	private HorarioComecoFimAula horarioComecoFimAula;

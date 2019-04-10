@@ -1,5 +1,7 @@
 package com.fatlab.service;
 
+import java.util.List;
+
 import com.fatlab.domain.Laboratorio;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Reserva;
@@ -37,4 +39,8 @@ public class ReservaService {
 
         return reserva;
     }
+
+	public List<Reserva> findAll() {
+		return repo.findAll();
+	}
 }

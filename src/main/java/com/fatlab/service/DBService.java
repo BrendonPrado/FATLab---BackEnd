@@ -1,6 +1,5 @@
 package com.fatlab.service;
 
-
 import java.util.Arrays;
 import java.util.Date;
 
@@ -9,6 +8,7 @@ import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +29,8 @@ public class DBService {
 	@Autowired
 	private HorarioComecoFimAulaRepository horarioComecoFimAulaRepository;
 
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	@Autowired
 	private HoraService horaService;
@@ -38,10 +40,9 @@ public class DBService {
 
 	public void  instantiateTestDatabase() {
 
-		Aluno a1 = new Aluno(null,"batat","j@g.com","batata",false,"62616616126616");
+		Aluno a1 = new Aluno(null,"batat","123",this.encoder.encode("123"),true,"62616616126616");
 
-		Professor prof = new Professor(null,"bata","ao@g.com","batata",true,"327636267");
-
+		Professor prof = new Professor(null,"bata","ao@g.com",this.encoder.encode("batata"),true,"327636267");
 
 
 		Materia materia = new Materia("Algoritmos",prof,"A");
@@ -67,7 +68,7 @@ public class DBService {
 		labRepository.save(lab);
 		reservaRepository.save(reserva);
 
-		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",true);
+		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",false);
 		UsuarioNewDTO usuarioNewDTO = new UsuarioNewDTO("ba","jao@g.com","batata","7162616");
 
 		usuarioService.saveFromDTO(usuarioDTO);

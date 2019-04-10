@@ -1,11 +1,16 @@
 package com.fatlab.service;
 
 import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Materia;
+import com.fatlab.dto.LaboratorioDTO;
 import com.fatlab.repositories.LabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 @Service
 public class LabService {
@@ -25,4 +30,13 @@ public class LabService {
     public Laboratorio save(Laboratorio lab) {
         return repo.save( lab );
     }
+
+	public List<Laboratorio> findAll() {
+		return repo.findAll();
+    }
+
+	public Laboratorio fromDTO(LaboratorioDTO laboratorioDTO) {
+		return new Laboratorio(laboratorioDTO.getNome());
+	}
+    
 }

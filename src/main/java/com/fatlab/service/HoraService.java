@@ -6,13 +6,15 @@ import com.fatlab.repositories.HorarioComecoFimAulaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 @Service
 public class HoraService {
+
     @Autowired
-    HorarioComecoFimAulaRepository repo;
+    private HorarioComecoFimAulaRepository repo;
 
     public HorarioComecoFimAula DefinirHorarios(int aula, String turno) {
 
@@ -49,10 +51,9 @@ public class HoraService {
 
         horario_fim.add(Calendar.MINUTE, 50);
 
-        horario_comeco.set( Calendar.SECOND,0 );
-        horario_fim.set( Calendar.SECOND,0 );
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
 
-        return new HorarioComecoFimAula( turnoEnum,horario_comeco.getTime(),horario_fim.getTime() );
+        return new HorarioComecoFimAula( turnoEnum,sdf.format(horario_comeco.getTime()),sdf.format(horario_fim.getTime()) );
     }
 
     public HorarioComecoFimAula save(HorarioComecoFimAula horarioComecoFimAula){

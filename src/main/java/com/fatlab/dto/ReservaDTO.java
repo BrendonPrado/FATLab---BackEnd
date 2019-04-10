@@ -3,8 +3,6 @@ package com.fatlab.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/reservas")
@@ -24,6 +25,12 @@ public class ReservaResource {
                 .path( "/{id}" ).buildAndExpand( reserva.getId() ).toUri();
 
         return ResponseEntity.created( uri ).build();
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Reserva>> findAll() {
+      
+        return ResponseEntity.ok().body(service.findAll());
     }
 
 }

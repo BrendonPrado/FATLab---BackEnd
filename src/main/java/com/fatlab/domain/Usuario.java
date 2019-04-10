@@ -1,16 +1,23 @@
 package com.fatlab.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fatlab.domain.enums.Funcao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +28,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -36,43 +42,36 @@ public abstract class Usuario implements Serializable {
 
 	private String senha;
 
-
 	private boolean admin;
 
 
+
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "ACESSO_USUARIOS")
+    private Set<Integer> funcoes = new HashSet<>(  );
+
 	
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-	public Usuario(Integer id,String nome, String email, String senha,boolean admin) {
-		super();
+
+	public Usuario(Integer id, String nome, String email, String senha, boolean admin,Funcao func) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
+		this.admin = admin;
+		addFuncao(func);
+		if(this.admin==true){
+			addFuncao(Funcao.ADMIN);
+		}
 	}
 
-	
+	public Set<Funcao> getFuncao() {
+		return funcoes.stream().map( x -> Funcao.toEnum(x) ).collect( Collectors.toSet() );}
+
+	public void addFuncao(Funcao func){
+		this.funcoes.add(func.getCod());
+	}
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.fatlab.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -65,9 +66,13 @@ public class MateriaService {
 		}
 	}
 
-	public Set<Aluno> findALlMateriaAluno(Integer id) {
+	public Set<Aluno> findAllMateriaAluno(Integer id) {
 		Optional<Materia> materia = repo.findById( id );
 		return materia.orElseThrow( () -> new RuntimeException( "alunos não encontrados" ) ).getAlunos();
+	}
+
+	public List<Materia> findAll() {
+		return repo.findAll();
 	}
 	
 }
