@@ -1,12 +1,8 @@
 package com.fatlab.resource;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 
-import com.fatlab.domain.Reserva;
-import com.fatlab.dto.ReservaDTO;
-import com.fatlab.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +26,6 @@ public class MateriaResource {
 	@Autowired
 	private MateriaService service;
 
-	@Autowired
-	private ReservaService reservaService;
 	
 	@RequestMapping(value="{id}",method=RequestMethod.GET)
 	public ResponseEntity<Materia> find(@PathVariable Integer id){

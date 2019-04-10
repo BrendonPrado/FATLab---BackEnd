@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.fatlab.domain.*;
-import com.fatlab.domain.enums.Tipo;
 import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.*;
@@ -39,9 +38,9 @@ public class DBService {
 
 	public void  instantiateTestDatabase() {
 
-		Aluno a1 = new Aluno(null,"Joao","j@g.com","batata",false,"62616616126616");
+		Aluno a1 = new Aluno(null,"batat","j@g.com","batata",false,"62616616126616");
 
-		Professor prof = new Professor(null,"jao","ao@g.com","batata",true,"327636267");
+		Professor prof = new Professor(null,"bata","ao@g.com","batata",true,"327636267");
 
 
 
@@ -68,8 +67,8 @@ public class DBService {
 		labRepository.save(lab);
 		reservaRepository.save(reserva);
 
-		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Aluno",true);
-		UsuarioNewDTO usuarioNewDTO = new UsuarioNewDTO("Jão","jao@g.com","batata","7162616");
+		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",true);
+		UsuarioNewDTO usuarioNewDTO = new UsuarioNewDTO("ba","jao@g.com","batata","7162616");
 
 		usuarioService.saveFromDTO(usuarioDTO);
 		usuarioService.saveFromNewDTO(usuarioNewDTO);

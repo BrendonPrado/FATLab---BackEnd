@@ -14,9 +14,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @JsonTypeName("Aluno")
+@NoArgsConstructor
 public class Aluno extends Usuario {
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +42,7 @@ public class Aluno extends Usuario {
 	}
 
 
-	
+
+
 	
 }

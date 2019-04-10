@@ -1,6 +1,7 @@
 
 package com.fatlab.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fatlab.domain.*;
@@ -24,6 +25,9 @@ public class UsuarioService {
 
 	@Autowired
 	private ProfessorRepository professorRepository;
+
+	@Autowired
+	private MateriaService materiaService;
 
 	public Usuario find(Integer id) {
 		Optional<Usuario> aluno = repo.findById(id);
@@ -69,5 +73,24 @@ public class UsuarioService {
 		usuario.setSenha(usuarioNewDTO.getSenha());
 
 		return usuario;
+	}
+	
+	public List<Usuario> findAll(){
+		return repo.findAll();
+	}
+
+	public void delete(Integer id) {
+		Professor usuario = professorRepository.findById(id).orElse(null);
+		if(usuario!=null){
+			System.out.println(usuario.getNome());
+			usuario.getMaterias().forEach( materia -> {
+				materia.setProfessor(null);
+				materiaService.save(materia);
+			});
+			repo.deleteById(id);
+
+		}else{
+			repo.deleteById(id);
+		}
 	}
 }
