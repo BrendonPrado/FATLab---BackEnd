@@ -21,7 +21,7 @@ public class UsuarioDTO implements Serializable{
 	private String matricula;
 	private String tipo;
 	private boolean admin;
-
+	
 	public UsuarioDTO(String matricula, String tipo, boolean admin) {
 		this.matricula = matricula;
 		this.tipo = tipo;

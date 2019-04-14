@@ -40,13 +40,13 @@ public abstract class Usuario implements Serializable {
 	@Column(unique = true)
 	private String email;
 
+	@JsonIgnore
 	private String senha;
 
-	private boolean admin;
 
 
 
-
+	@JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ACESSO_USUARIOS")
     private Set<Integer> funcoes = new HashSet<>(  );
@@ -58,9 +58,8 @@ public abstract class Usuario implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
-		this.admin = admin;
 		addFuncao(func);
-		if(this.admin==true){
+		if(admin==true){
 			addFuncao(Funcao.ADMIN);
 		}
 	}

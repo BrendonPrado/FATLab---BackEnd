@@ -4,19 +4,12 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fatlab.domain.enums.Funcao;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 public class UserSS implements UserDetails {

@@ -48,6 +48,9 @@ public class UsuarioService {
 		return save(usuario);
 	}
 
+	public Usuario findByEmail(String email){
+		return repo.findByEmail(email);
+	}
 
 	private Usuario fromDTO(UsuarioDTO usuarioDTO){
 		if (usuarioDTO.getTipo().equals("Aluno")){

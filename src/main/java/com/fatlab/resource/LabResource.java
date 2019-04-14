@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.fatlab.domain.Laboratorio;
-import com.fatlab.domain.Materia;
 import com.fatlab.dto.LaboratorioDTO;
 import com.fatlab.service.LabService;
 

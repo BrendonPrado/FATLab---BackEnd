@@ -3,6 +3,7 @@ package com.fatlab.conf;
 import java.util.Arrays;
 
 import com.fatlab.security.JWTAuthenticationFilter;
+import com.fatlab.security.JWTAuthorizationFilter;
 import com.fatlab.security.JWTUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().permitAll();
+
+
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+
+
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	

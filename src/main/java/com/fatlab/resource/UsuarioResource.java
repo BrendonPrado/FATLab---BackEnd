@@ -4,6 +4,7 @@ import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.fatlab.domain.Usuario;
@@ -42,6 +43,7 @@ public class UsuarioResource {
 
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> save(@RequestBody UsuarioDTO usuarioDTO){
 

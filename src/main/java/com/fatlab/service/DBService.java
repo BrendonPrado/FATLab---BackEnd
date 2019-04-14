@@ -44,7 +44,7 @@ public class DBService {
 
 		Professor prof = new Professor(null,"bata","ao@g.com",this.encoder.encode("batata"),true,"327636267");
 
-
+		Admin adm = new Admin(null,"batatãozinho","b@g.com",this.encoder.encode("123"));
 		Materia materia = new Materia("Algoritmos",prof,"A");
 
 		Laboratorio lab = new Laboratorio("301");
@@ -53,7 +53,7 @@ public class DBService {
 
 		Reserva reserva = new Reserva(new Date(),lab, horarioComecoFimAula, materia);
 
-		usuarioRepository.saveAll(Arrays.asList(a1,prof));
+		usuarioRepository.saveAll(Arrays.asList(a1,prof,adm));
 
 
 

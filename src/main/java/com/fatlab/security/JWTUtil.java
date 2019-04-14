@@ -13,6 +13,7 @@ public class JWTUtil {
     @Value( "${jwt.secret}" )
     private String secret;
 
+ 
 
     public String generateToken(String username){
         return Jwts.builder().setSubject( username )

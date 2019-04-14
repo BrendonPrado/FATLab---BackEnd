@@ -1,7 +1,6 @@
 package com.fatlab.service;
 
 import com.fatlab.domain.Laboratorio;
-import com.fatlab.domain.Materia;
 import com.fatlab.dto.LaboratorioDTO;
 import com.fatlab.repositories.LabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
 
 @Service
 public class LabService {
