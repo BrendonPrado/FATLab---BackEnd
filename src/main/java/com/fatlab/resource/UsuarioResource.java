@@ -4,6 +4,7 @@ import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class UsuarioResource {
 	
 
 	
-	
+	@Secured({"ROLE_ADMIN"})
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Usuario> find(@PathVariable Integer id){
 		Usuario usuario = service.find(id);
@@ -32,6 +33,7 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(usuario);
 	}
 
+	
 	@PostMapping(value = "/new")
 	public ResponseEntity<Void> saveNew(@RequestBody @Valid UsuarioNewDTO usuarioNewDTO){
 		Usuario usuario = service.saveFromNewDTO( usuarioNewDTO );
@@ -55,12 +57,14 @@ public class UsuarioResource {
 		return ResponseEntity.created( uri ).build();
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Usuario>> findAll(){
 		List<Usuario> usuarios = service.findAll();
 		return ResponseEntity.ok().body(usuarios);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value="/{id}",method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		this.service.delete(id);

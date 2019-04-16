@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.fatlab.security.UserSS;
 @Service
 public class UserService {
-    public static UserSS authenticated() {
+    public  UserSS authenticated() {
         try {
             return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -7,6 +7,7 @@ import com.fatlab.security.JWTAuthorizationFilter;
 import com.fatlab.security.JWTUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -36,16 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private JWTUtil jwtUtil;
+
 	
-	private static final String[] PUBLIC_MATCHERS = {
-			"/h2-console/**"
+
+	private static final String[] PUBLIC_MATCHERS_POST = {
+			"/login/**",
+			"/usuarios/new/"
 	};
 
-	private static final String[] PUBLIC_MATCHERS_GET = {
-			"/produtos/**",
-			"/categorias/**",
-			"/clientes/**"
-	};
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -55,10 +55,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 		
 		http.cors().and().csrf().disable();
-		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-			.antMatchers(PUBLIC_MATCHERS).permitAll()
-			.anyRequest().permitAll();
+		
+		http.authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+		.and()
+		.authorizeRequests().antMatchers("/h2-console/**").permitAll()	
+		.anyRequest().authenticated();
 
 
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
