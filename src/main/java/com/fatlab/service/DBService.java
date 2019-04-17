@@ -3,13 +3,23 @@ package com.fatlab.service;
 import java.util.Arrays;
 import java.util.Date;
 
-import com.fatlab.domain.*;
-import com.fatlab.dto.UsuarioDTO;
-import com.fatlab.dto.UsuarioNewDTO;
-import com.fatlab.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.fatlab.domain.Admin;
+import com.fatlab.domain.Aluno;
+import com.fatlab.domain.HorarioComecoFimAula;
+import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Materia;
+import com.fatlab.domain.Professor;
+import com.fatlab.domain.Reserva;
+import com.fatlab.dto.UsuarioDTO;
+import com.fatlab.repositories.HorarioComecoFimAulaRepository;
+import com.fatlab.repositories.LabRepository;
+import com.fatlab.repositories.MateriaRepository;
+import com.fatlab.repositories.ReservaRepository;
+import com.fatlab.repositories.UsuarioRepository;
 
 @Service
 public class DBService {
@@ -69,10 +79,8 @@ public class DBService {
 		reservaRepository.save(reserva);
 
 		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",false);
-		UsuarioNewDTO usuarioNewDTO = new UsuarioNewDTO("ba","jao@g.com","batata","7162616");
 
 		usuarioService.saveFromDTO(usuarioDTO);
-		usuarioService.saveFromNewDTO(usuarioNewDTO);
 
 
 	}

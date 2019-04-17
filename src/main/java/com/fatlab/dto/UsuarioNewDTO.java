@@ -6,6 +6,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fatlab.service.validator.UsuarioNewDTOValido;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@UsuarioNewDTOValido
 public class UsuarioNewDTO {
     @NotEmpty(message = "O nome não pode estar vazio")
     private String nome;

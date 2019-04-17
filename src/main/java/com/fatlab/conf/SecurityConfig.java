@@ -7,7 +7,6 @@ import com.fatlab.security.JWTAuthorizationFilter;
 import com.fatlab.security.JWTUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -42,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS_POST = {
 			"/login/**",
-			"/usuarios/new/"
+			"/usuarios/new/**"
 	};
 
 	
