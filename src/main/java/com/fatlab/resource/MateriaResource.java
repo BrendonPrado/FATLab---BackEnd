@@ -70,7 +70,7 @@ public class MateriaResource {
 	@Secured("ROLE_PROFESSOR")
 	@RequestMapping(value="/professor",method=RequestMethod.POST)
 	public ResponseEntity<Void> matriculaProfessor(@RequestBody MatriculaDTO matriculaDTO){
-		service.matriculaAluno(matriculaDTO);
+		service.matriculaProfessor(matriculaDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("").buildAndExpand().toUri();
 		
