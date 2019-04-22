@@ -47,7 +47,7 @@ public class UsuarioResource {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> save(@RequestBody UsuarioDTO usuarioDTO){
+	public ResponseEntity<Void> save(@Valid @RequestBody UsuarioDTO usuarioDTO){
 
 		Usuario usuario = service.saveFromDTO( usuarioDTO );
 

@@ -32,7 +32,7 @@ public class UsuarioDTOValidator implements ConstraintValidator<UsuarioDTOValido
 		
 		boolean usuarioPreenchido = (aluno != null ) || (prof != null);
 		if(usuarioPreenchido ) {
-			list.add(new FieldMessage("matricula","este usuário já possui cadastro, insira um ra válido!"));
+			list.add(new FieldMessage("matricula/RA","RA ou matricula já cadastrada!"));
 		}
 		
 		if(!value.getTipo().equals("Aluno") && !value.getTipo().equals("Professor")) {

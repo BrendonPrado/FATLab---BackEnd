@@ -2,6 +2,8 @@ package com.fatlab.dto;
 
 import java.io.Serializable;
 
+import com.fatlab.service.validator.UsuarioDTOValido;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@UsuarioDTOValido
 public class UsuarioDTO implements Serializable{
 
 	/**
