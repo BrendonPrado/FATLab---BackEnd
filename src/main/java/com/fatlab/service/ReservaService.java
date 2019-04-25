@@ -2,7 +2,7 @@ package com.fatlab.service;
 
 import java.util.List;
 
-import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Lab;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Reserva;
 import com.fatlab.dto.ReservaDTO;
@@ -27,7 +27,7 @@ public class ReservaService {
     public Reserva saveReservaFromDTO(ReservaDTO reservaDTO) {
 
         Materia materia = materiaService.find( reservaDTO.getMateria_id() );
-        Laboratorio lab = labService.find( reservaDTO.getLab_id());
+        Lab lab = labService.find( reservaDTO.getLab_id());
         Reserva reserva = new Reserva(reservaDTO.getDiaMes(),lab, horaService.DefinirHorarios( reservaDTO.getNum_aula(),reservaDTO.getTurno() ), materia);
         reserva = repo.save( reserva );
 
@@ -46,5 +46,9 @@ public class ReservaService {
 
 	public List<Reserva> findAllByMateria(Materia materia) {
 		return repo.findByMateria(materia);
-	}
+    }
+    
+    public List<Reserva> findAllByLab(Lab lab){
+        return repo.findByLab(lab);
+    }
 }

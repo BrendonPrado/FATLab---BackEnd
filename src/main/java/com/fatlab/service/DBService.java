@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fatlab.domain.Admin;
 import com.fatlab.domain.Aluno;
 import com.fatlab.domain.HorarioComecoFimAula;
-import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Lab;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
 import com.fatlab.domain.Reserva;
@@ -57,7 +57,7 @@ public class DBService {
 		Admin adm = new Admin(null,"batatãozinho","b@g.com",this.encoder.encode("123"));
 		Materia materia = new Materia("Algoritmos",prof,"A");
 
-		Laboratorio lab = new Laboratorio("301","30");
+		Lab lab = new Lab("301","30");
 
 		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios( 3,"Diurno" );
 

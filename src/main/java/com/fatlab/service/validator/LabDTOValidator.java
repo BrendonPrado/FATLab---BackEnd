@@ -6,7 +6,7 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Lab;
 import com.fatlab.dto.LaboratorioDTO;
 import com.fatlab.repositories.LabRepository;
 import com.fatlab.resource.exception.FieldMessage;
@@ -27,7 +27,7 @@ public class LabDTOValidator implements ConstraintValidator<LabDTOValido, Labora
         List<FieldMessage> list = new ArrayList<>();
 
 
-        Laboratorio lab = this.labRepo.findByNumero(value.getNumero());
+        Lab lab = this.labRepo.findByNumero(value.getNumero());
         if(lab != null){
             list.add(new FieldMessage("numero", "Este já lab já foi cadastrado"));
         }

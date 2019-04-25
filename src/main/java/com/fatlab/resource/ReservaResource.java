@@ -1,8 +1,10 @@
 package com.fatlab.resource;
 
+import com.fatlab.domain.Lab;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Reserva;
 import com.fatlab.dto.ReservaDTO;
+import com.fatlab.service.LabService;
 import com.fatlab.service.MateriaService;
 import com.fatlab.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class ReservaResource {
     @Autowired
     private MateriaService materiaService;
 
+    @Autowired
+    private LabService labService;
+
     @Secured("ROLE_PROFESSOR")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> save(@RequestBody ReservaDTO reservaDTO) {
@@ -49,9 +54,17 @@ public class ReservaResource {
 
     @Secured({"ROLE_ADMIN","ROLE_PROFESSOR","ROLE_ALUNO"})
     @GetMapping(value="/materias/{id}")
-    public ResponseEntity<List<Reserva>> findReservasMaterias(@PathVariable Integer id) {
+    public ResponseEntity<List<Reserva>> findReservasMateria(@PathVariable Integer id) {
         Materia materia = materiaService.find(id);
         List<Reserva> reservas = service.findAllByMateria(materia);
+        return ResponseEntity.ok().body(reservas);
+    }   
+
+    @Secured({"ROLE_ADMIN","ROLE_PROFESSOR","ROLE_ALUNO"})
+    @GetMapping(value="/labs/{id}")
+    public ResponseEntity<List<Reserva>> findReservasLab(@PathVariable Integer id) {
+        Lab lab = labService.find(id);
+        List<Reserva> reservas = service.findAllByLab(lab);
         return ResponseEntity.ok().body(reservas);
     }   
     

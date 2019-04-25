@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Lab;
 import com.fatlab.dto.LaboratorioDTO;
 import com.fatlab.service.LabService;
 
@@ -27,9 +27,9 @@ public class LabResource{
     private LabService service;
     
     @GetMapping
-    public ResponseEntity<List<Laboratorio>> findAll(){
+    public ResponseEntity<List<Lab>> findAll(){
         
-        List<Laboratorio> labs = service.findAll();
+        List<Lab> labs = service.findAll();
 
         return ResponseEntity.ok().body(labs);
     }
@@ -37,7 +37,7 @@ public class LabResource{
     @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody @Valid LaboratorioDTO laboratorioDTO){
-        Laboratorio lab = service.fromDTO(laboratorioDTO);
+        Lab lab = service.fromDTO(laboratorioDTO);
 		lab = service.save(lab);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(lab.getId()).toUri();

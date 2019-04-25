@@ -1,6 +1,6 @@
 package com.fatlab.service;
 
-import com.fatlab.domain.Laboratorio;
+import com.fatlab.domain.Lab;
 import com.fatlab.dto.LaboratorioDTO;
 import com.fatlab.repositories.LabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +16,25 @@ public class LabService {
     @Autowired
     private LabRepository repo;
 
-    public Laboratorio findByNumero(String numero){
+    public Lab findByNumero(String numero){
         return repo.findByNumero( numero );
     }
 
-    public Laboratorio find(Integer id){
-        Optional<Laboratorio> lab = repo.findById( id );
+    public Lab find(Integer id){
+        Optional<Lab> lab = repo.findById( id );
         return lab.orElseThrow( () -> new RuntimeException( "não foi possível encontrar esse lab" ) );
     }
 
-    public Laboratorio save(Laboratorio lab) {
+    public Lab save(Lab lab) {
         return repo.save( lab );
     }
 
-	public List<Laboratorio> findAll() {
+	public List<Lab> findAll() {
 		return repo.findAll();
     }
 
-	public Laboratorio fromDTO(LaboratorioDTO laboratorioDTO) {
-		return new Laboratorio(laboratorioDTO.getNumero(),laboratorioDTO.getCapacidade());
+	public Lab fromDTO(LaboratorioDTO laboratorioDTO) {
+		return new Lab(laboratorioDTO.getNumero(),laboratorioDTO.getCapacidade());
 	}
     
 }

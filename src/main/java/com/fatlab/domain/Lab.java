@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Laboratorio implements Serializable{
+public class Lab implements Serializable{
 	
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class Laboratorio implements Serializable{
 	@OneToMany(mappedBy="lab")
 	private Set<Reserva> reservas = new HashSet<>();
 
-	public Laboratorio(String numero,String capacidade){
+	public Lab(String numero,String capacidade){
 		super();
 		this.numero = numero;
 		this.capacidade = Integer.parseInt(capacidade) ;

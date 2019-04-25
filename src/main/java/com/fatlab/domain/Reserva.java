@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,7 +37,7 @@ public class Reserva implements Serializable{
 	
 	@ManyToOne()
 	@JoinColumn(name="lab_id")
-	private Laboratorio lab;
+	private Lab lab;
 	
 	
 	@ManyToOne()
@@ -47,7 +48,7 @@ public class Reserva implements Serializable{
 	@JoinColumn(name="materia_id")
 	private Materia materia;
 
-	public Reserva(Date diaMes, Laboratorio lab, HorarioComecoFimAula horarioComecoFimAula, Materia materia) {
+	public Reserva(Date diaMes, Lab lab, HorarioComecoFimAula horarioComecoFimAula, Materia materia) {
 		super();
 		this.diaMes = diaMes;
 		this.lab = lab;

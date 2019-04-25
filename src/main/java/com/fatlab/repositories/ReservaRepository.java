@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import com.fatlab.domain.Lab;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Reserva;
 
@@ -12,5 +13,8 @@ import com.fatlab.domain.Reserva;
 public interface ReservaRepository extends JpaRepository<Reserva, Integer>{
 
 
-	List<Reserva> findByMateria(Materia materia);;
+	List<Reserva> findByMateria(Materia materia);
+
+	List<Reserva> findByLab(Lab lab);;
+
 }
