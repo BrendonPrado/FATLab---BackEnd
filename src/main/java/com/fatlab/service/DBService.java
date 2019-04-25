@@ -57,7 +57,7 @@ public class DBService {
 		Admin adm = new Admin(null,"batatãozinho","b@g.com",this.encoder.encode("123"));
 		Materia materia = new Materia("Algoritmos",prof,"A");
 
-		Laboratorio lab = new Laboratorio("301");
+		Laboratorio lab = new Laboratorio("301","30");
 
 		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios( 3,"Diurno" );
 
@@ -69,7 +69,6 @@ public class DBService {
 
 		materia.addReserva(reserva);
 		prof.addMateria(materia);
-		a1.addMateria(materia);
 
 
 		materiaRepository.save(materia);

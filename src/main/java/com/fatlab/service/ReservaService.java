@@ -43,4 +43,8 @@ public class ReservaService {
 	public List<Reserva> findAll() {
 		return repo.findAll();
 	}
+
+	public List<Reserva> findAllByMateria(Materia materia) {
+		return repo.findByMateria(materia);
+	}
 }

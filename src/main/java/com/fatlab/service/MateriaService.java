@@ -11,6 +11,7 @@ import com.fatlab.repositories.MateriaRepository;
 import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
+import com.fatlab.domain.Usuario;
 import com.fatlab.dto.MateriaDTO;
 import com.fatlab.dto.MatriculaDTO;
 
@@ -73,6 +74,14 @@ public class MateriaService {
 
 	public List<Materia> findAll() {
 		return repo.findAll();
+	}
+
+	public List<Materia> materiasUsuario(Usuario usuario) {
+		if(usuario instanceof Aluno){
+			return repo.findByAlunos(usuario);
+		}else{
+			return repo.findByProfessor(usuario);
+		}
 	}
 	
 }

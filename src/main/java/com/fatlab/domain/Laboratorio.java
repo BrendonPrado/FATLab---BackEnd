@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,15 +31,20 @@ public class Laboratorio implements Serializable{
 	@GeneratedValue
 	private Integer id;
 	
+	@Column(unique = true,nullable = false)
 	private String numero;
 	
+	@Column(nullable = false)
+	private Integer capacidade;
+
 	@JsonIgnore
 	@OneToMany(mappedBy="lab")
 	private Set<Reserva> reservas = new HashSet<>();
 
-	public Laboratorio(String numero) {
+	public Laboratorio(String numero,String capacidade){
 		super();
 		this.numero = numero;
+		this.capacidade = Integer.parseInt(capacidade) ;
 	}
 
 	public void addReserva(Reserva reserva) {

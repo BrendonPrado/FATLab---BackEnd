@@ -1,11 +1,15 @@
 package com.fatlab.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fatlab.domain.enums.Funcao;
 
 import lombok.Getter;
@@ -23,12 +27,11 @@ public class Aluno extends Usuario {
 	@Column(unique = true)
 	private String ra;
 
-	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="Alunos_Materias",
 	joinColumns=@JoinColumn(name="aluno_id"),
 	inverseJoinColumns=@JoinColumn(name="materia_id"))
-	private Set<Materia> materias= new HashSet<>();
+	private List<Materia> materias = new ArrayList<>();
 
 
 	public Aluno(Integer id, String nome, String email, String senha, boolean admin, String RA) {

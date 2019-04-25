@@ -1,7 +1,7 @@
 package com.fatlab.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -25,8 +25,8 @@ public class Professor extends Usuario{
 	private String matricula;
 
 	@JsonIgnore
-	@OneToMany(mappedBy="professor")
-	private Set<Materia> materias = new HashSet<>() ;
+	@OneToMany(mappedBy="professor",fetch = FetchType.EAGER)
+	private List<Materia> materias = new ArrayList<>() ;
 
 	public Professor(Integer id, String nome, String email, String senha, boolean admin, String matricula) {
 		super(id, nome, email, senha, admin,Funcao.PROFESSOR);

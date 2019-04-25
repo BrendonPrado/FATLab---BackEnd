@@ -1,6 +1,8 @@
 package com.fatlab.dto;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+
+import com.fatlab.service.validator.LabDTOValido;
 
 import org.hibernate.annotations.Type;
 
@@ -11,11 +13,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@LabDTOValido
 public class LaboratorioDTO{
     
     @Type(type = "IntegerTypes")
-    @NotNull()
-    private String nome;
+    @NotBlank()
+    private String numero;
+
+    @Type(type = "IntegerTypes")
+    private String capacidade;
 
     
 }

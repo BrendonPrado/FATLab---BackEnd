@@ -34,7 +34,7 @@ public class LabService {
     }
 
 	public Laboratorio fromDTO(LaboratorioDTO laboratorioDTO) {
-		return new Laboratorio(laboratorioDTO.getNome());
+		return new Laboratorio(laboratorioDTO.getNumero(),laboratorioDTO.getCapacidade());
 	}
     
 }

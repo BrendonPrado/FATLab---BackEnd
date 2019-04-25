@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -59,7 +61,7 @@ public class MateriaResource {
 	
 	@Secured("ROLE_ALUNO")
 	@RequestMapping(value="/alunos",method=RequestMethod.POST)
-	public ResponseEntity<Void> matriculaAluno(@RequestBody MatriculaDTO matriculaDTO){
+	public ResponseEntity<Void> matriculaAluno(@RequestBody @Valid MatriculaDTO matriculaDTO){
 		service.matriculaAluno(matriculaDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("").buildAndExpand().toUri();
@@ -69,7 +71,7 @@ public class MateriaResource {
 	
 	@Secured("ROLE_PROFESSOR")
 	@RequestMapping(value="/professor",method=RequestMethod.POST)
-	public ResponseEntity<Void> matriculaProfessor(@RequestBody MatriculaDTO matriculaDTO){
+	public ResponseEntity<Void> matriculaProfessor(@RequestBody @Valid MatriculaDTO matriculaDTO){
 		service.matriculaProfessor(matriculaDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("").buildAndExpand().toUri();

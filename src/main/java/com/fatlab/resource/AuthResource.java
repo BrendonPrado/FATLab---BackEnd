@@ -1,6 +1,10 @@
 package com.fatlab.resource;
 
+import java.util.List;
+
+import com.fatlab.domain.Materia;
 import com.fatlab.domain.Usuario;
+import com.fatlab.service.MateriaService;
 import com.fatlab.service.UserService;
 import com.fatlab.service.UsuarioService;
 
@@ -20,6 +24,9 @@ public class AuthResource{
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private MateriaService materiaService;
    
 
     @Secured({"ROLE_ALUNO","ROLE_PROFESSOR","ROLE_ADMIN"})
@@ -30,5 +37,12 @@ public class AuthResource{
         return ResponseEntity.ok().body(usuario);
 
     }
-
+    @Secured({"ROLE_ALUNO","ROLE_PROFESSOR"})
+    @RequestMapping(value = "/me/materias",method = RequestMethod.GET)
+    public ResponseEntity<List<Materia>> minhasMaterias(){
+        String email = service.authenticated().getUsername();
+        Usuario usuario = usuarioService.findByEmail(email);
+        List<Materia> materias = materiaService.materiasUsuario(usuario);
+        return ResponseEntity.ok().body(materias);
+    }
 }

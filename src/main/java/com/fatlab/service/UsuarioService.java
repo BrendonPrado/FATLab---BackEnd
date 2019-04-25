@@ -4,16 +4,19 @@ package com.fatlab.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.fatlab.domain.*;
+import com.fatlab.domain.Aluno;
+import com.fatlab.domain.Materia;
+import com.fatlab.domain.Professor;
+import com.fatlab.domain.Usuario;
 import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.AlunoRepository;
 import com.fatlab.repositories.ProfessorRepository;
+import com.fatlab.repositories.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.fatlab.repositories.UsuarioRepository;
 
 @Service
 public class UsuarioService {
@@ -98,6 +101,18 @@ public class UsuarioService {
 
 		}else{
 			repo.deleteById(id);
+		}
+	}
+
+	public List<Materia> getMaterias(Usuario usuario) {
+		Aluno aluno = this.alunoRepository.findById(usuario.getId()).get();
+		Professor professor = this.professorRepository.findById(usuario.getId()).get();
+		if(aluno != null){
+			System.out.println(aluno.getMaterias());
+			return aluno.getMaterias();
+		}else{
+			System.out.println(professor.getMaterias());
+			return professor.getMaterias();
 		}
 	}
 }
