@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.authorizeRequests().antMatchers("/h2-console/**").permitAll()	
 		.anyRequest().authenticated();
+		
 
 
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));

@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.fatlab.domain.Admin;
 import com.fatlab.domain.Usuario;
 import com.fatlab.service.UsuarioService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,7 +30,6 @@ public class UsuarioResource {
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Usuario> find(@PathVariable Integer id){
 		Usuario usuario = service.find(id);
-		
 		return ResponseEntity.ok().body(usuario);
 	}
 
@@ -69,6 +69,19 @@ public class UsuarioResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		this.service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@Secured({"ROLE_ADMIN"})
+	@PostMapping(value = "/new/admin")
+	public ResponseEntity<Void> saveAdmin(@Valid @RequestBody Admin adm ){
+		
+		adm = (@Valid Admin) service.save(adm);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(adm.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
+
 	}
 
 
