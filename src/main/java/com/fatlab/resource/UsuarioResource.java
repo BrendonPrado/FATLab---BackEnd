@@ -1,5 +1,6 @@
 package com.fatlab.resource;
 
+import com.fatlab.dto.AdminDTO;
 import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.fatlab.domain.Admin;
 import com.fatlab.domain.Usuario;
 import com.fatlab.service.UsuarioService;
+
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -73,15 +74,20 @@ public class UsuarioResource {
 
 	@Secured({"ROLE_ADMIN"})
 	@PostMapping(value = "/new/admin")
-	public ResponseEntity<Void> saveAdmin(@Valid @RequestBody Admin adm ){
+	public ResponseEntity<Void> saveAdmin(@Valid @RequestBody AdminDTO adm ){
 		
-		adm = (@Valid Admin) service.save(adm);
+		Usuario usuario = service.saveNewAdm(adm);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(adm.getId()).toUri();
+				.path("/{id}").buildAndExpand(usuario.getId()).toUri();
 		
 		return ResponseEntity.created(uri).build();
+	}
 
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Void>  update(@RequestBody @Valid UsuarioDTO usuarioAtualizado, @PathVariable Integer id) {
+		service.update(usuarioAtualizado, id);
+		return ResponseEntity.noContent(	).build();
 	}
 
 

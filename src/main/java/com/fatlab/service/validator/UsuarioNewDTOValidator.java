@@ -14,12 +14,9 @@ import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.AlunoRepository;
 import com.fatlab.repositories.ProfessorRepository;
 import com.fatlab.resource.exception.FieldMessage;
-import com.fatlab.service.UsuarioService;
 
 public class UsuarioNewDTOValidator implements ConstraintValidator<UsuarioNewDTOValido ,UsuarioNewDTO > {
 
-	@Autowired
-	private UsuarioService usuarioService;
 	
 	@Autowired
 	private AlunoRepository alunoRep;
@@ -30,9 +27,8 @@ public class UsuarioNewDTOValidator implements ConstraintValidator<UsuarioNewDTO
 	public boolean isValid(UsuarioNewDTO value, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
-		if(usuarioService.findByEmail(value.getEmail()) != null) {
-			list.add(new FieldMessage("email","este email já esta sendo usado!"));
-		}
+
+	
 		
 		Aluno aluno = alunoRep.findAlunoByRa(value.getMatricula());
 		Professor prof = profRep.findProfessorByMatricula(value.getMatricula());

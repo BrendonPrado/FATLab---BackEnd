@@ -6,6 +6,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fatlab.service.validator.EmailValid;
 import com.fatlab.service.validator.UsuarioNewDTOValido;
 
 import lombok.Getter;
@@ -17,9 +18,10 @@ import lombok.Setter;
 @Setter
 @UsuarioNewDTOValido
 public class UsuarioNewDTO {
-    @NotEmpty(message = "O nome não pode estar vazio")
+
     private String nome;
 
+    @EmailValid
     @Email(message = "Por favor insira um email válido")
     private String email;
     
@@ -28,7 +30,6 @@ public class UsuarioNewDTO {
     @Length(min = 3,max = 20)
     private String senha;
     
-    @NotEmpty(message = "A matricula não pode estar vazia")
     private String matricula;
 
     public UsuarioNewDTO(String nome, String email, String senha, String matricula) {

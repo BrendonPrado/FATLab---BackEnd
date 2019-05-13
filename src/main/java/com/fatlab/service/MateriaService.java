@@ -12,8 +12,10 @@ import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
 import com.fatlab.domain.Usuario;
+import com.fatlab.domain.enums.Funcao;
 import com.fatlab.dto.MateriaDTO;
 import com.fatlab.dto.MatriculaDTO;
+import com.fatlab.dto.UsuarioDTO;
 
 
 @Service
@@ -83,5 +85,28 @@ public class MateriaService {
 			return repo.findByProfessor(usuario);
 		}
 	}
+
+	public void UpdateToNullMateriasUsuario(Set<Funcao> funcoes, Usuario usuario) {
+		boolean isAluno = funcoes.contains(Funcao.ALUNO);
+
+		System.out.println(isAluno);
+		List<Materia> materias = (isAluno)? repo.findByAlunos(usuario) 
+		: repo.findByProfessor(usuario);
+		
+
+		System.out.println("hnsueuhuhfeufuuefejfujefijuijeiiejii	");
+		if(isAluno){
+		materias.forEach(materia -> 
+			materia.getAlunos().remove(usuario)
+		);
+	}else{
+		materias.forEach(materia -> 
+			materia.setProfessor(null)
+		);
+	}
+
+	this.repo.saveAll(materias);
+	
+  }
 	
 }

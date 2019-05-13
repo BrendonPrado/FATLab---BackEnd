@@ -15,7 +15,7 @@ public enum Funcao {
 		return descricao;
 	}
 	public int getCod() {
-		return cod;
+		return this.cod;
 	}
 
 

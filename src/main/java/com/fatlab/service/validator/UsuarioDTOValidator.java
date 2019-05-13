@@ -3,6 +3,7 @@ package com.fatlab.service.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -22,6 +23,9 @@ public class UsuarioDTOValidator implements ConstraintValidator<UsuarioDTOValido
 
 	@Autowired
 	private ProfessorRepository profRep;
+
+	@Autowired
+	private HttpServletRequest request;
 	
 	@Override
 	public boolean isValid(UsuarioDTO value, ConstraintValidatorContext context) {
@@ -31,8 +35,10 @@ public class UsuarioDTOValidator implements ConstraintValidator<UsuarioDTOValido
 		Professor prof = profRep.findProfessorByMatricula(value.getMatricula());
 		
 		boolean usuarioPreenchido = (aluno != null ) || (prof != null);
-		if(usuarioPreenchido ) {
-			list.add(new FieldMessage("matricula/RA","RA ou matricula já cadastrada!"));
+
+		System.out.println(this.request.getMethod());
+		if(usuarioPreenchido &&  !this.request.getMethod().equals("PUT")) {
+			list.add(new FieldMessage("matricula","RA ou matricula já cadastrada!"));
 		}
 		
 		if(!value.getTipo().equals("Aluno") && !value.getTipo().equals("Professor")) {

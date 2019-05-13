@@ -1,13 +1,18 @@
 
 package com.fatlab.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.fatlab.domain.Admin;
 import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
 import com.fatlab.domain.Usuario;
+import com.fatlab.domain.enums.Funcao;
+import com.fatlab.dto.AdminDTO;
 import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
 import com.fatlab.repositories.AlunoRepository;
@@ -56,12 +61,10 @@ public class UsuarioService {
 	}
 
 	private Usuario fromDTO(UsuarioDTO usuarioDTO){
-		if (usuarioDTO.getTipo().equals("Aluno")){
+		if (isAluno(usuarioDTO)){
 			return new Aluno(null,null,null,null,usuarioDTO.isAdmin(),usuarioDTO.getMatricula());
-		}else if(usuarioDTO.getTipo().equals("Professor")){
+		}else {
 			return new Professor(null,null,null,null,usuarioDTO.isAdmin(),usuarioDTO.getMatricula());
-		}else{
-			throw new RuntimeException("Deve ser um tipo de usuário valido");
 		}
 	}
 
@@ -70,13 +73,18 @@ public class UsuarioService {
 		return save(usuario);
 	}
 
+	public Usuario saveNewAdm(AdminDTO newAdm){
+		Admin adm = new Admin(null,null,newAdm.getEmail(),newAdm.getSenha());
+		return save(adm);
+	}
+
 	private Usuario fromNewDTO(UsuarioNewDTO usuarioNewDTO) {
 		Usuario usuario = alunoRepository.findAlunoByRa(usuarioNewDTO.getMatricula());
 		if(usuario == null){
 			usuario = professorRepository.findProfessorByMatricula(usuarioNewDTO.getMatricula());
 			if(usuario == null){
 				throw new RuntimeException("Usuario não encontrado!Comunique um admin!");
-			}
+			} 
 		}
 		usuario.setNome(usuarioNewDTO.getNome());
 		usuario.setEmail(usuarioNewDTO.getEmail());
@@ -92,7 +100,6 @@ public class UsuarioService {
 	public void delete(Integer id) {
 		Professor usuario = professorRepository.findById(id).orElse(null);
 		if(usuario!=null){
-			System.out.println(usuario.getNome());
 			usuario.getMaterias().forEach( materia -> {
 				materia.setProfessor(null);
 				materiaService.save(materia);
@@ -108,11 +115,67 @@ public class UsuarioService {
 		Aluno aluno = this.alunoRepository.findById(usuario.getId()).get();
 		Professor professor = this.professorRepository.findById(usuario.getId()).get();
 		if(aluno != null){
-			System.out.println(aluno.getMaterias());
 			return aluno.getMaterias();
 		}else{
-			System.out.println(professor.getMaterias());
 			return professor.getMaterias();
 		}
 	}
+
+	public Usuario update(UsuarioDTO usuarioAtualizado, Integer id) {
+		Usuario usuario = find(id);
+		
+		usuario = alteraNivelUsuario(usuario, usuarioAtualizado);
+
+
+		if(usuario instanceof Aluno){
+			((Aluno)usuario).setRa(usuarioAtualizado.getMatricula());
+		}else{
+			((Professor)usuario).setMatricula(usuarioAtualizado.getMatricula());
+		}
+
+		return repo.save(usuario);
+	}
+
+
+	private Usuario alteraNivelUsuario(Usuario usuario, UsuarioDTO usuarioDTOAtualizado){
+		Set<Funcao> funcoes = usuario.getFuncao();
+		usuario.setFuncoes(new HashSet<Integer>());
+		
+		
+		if(isProfessor(usuarioDTOAtualizado)) {
+			usuario.addFuncao(Funcao.PROFESSOR);
+		}else {
+			usuario.addFuncao(Funcao.ALUNO);			
+		}
+
+		if(usuarioDTOAtualizado.isAdmin()){
+			usuario.addFuncao(Funcao.ADMIN);
+		}
+
+		if(!funcoes.containsAll(usuario.getFuncao())){
+			materiaService.UpdateToNullMateriasUsuario(funcoes, usuario);
+		}
+			
+
+		return usuario;
+	}
+
+	public boolean isAluno(UsuarioDTO usuarioDTO){
+		return usuarioDTO.getTipo().equals("Aluno");
+	}
+
+	public boolean isProfessor(UsuarioDTO usuarioDTO){
+		return usuarioDTO.getTipo().equals("Professor");
+	}
+
+	public boolean isAluno(Usuario usuario){
+		return usuario.getFuncao().contains(Funcao.ALUNO);
+	}
+
+	public boolean isProfessor(Usuario usuario){
+		return usuario.getFuncao().contains(Funcao.PROFESSOR);
+	}
+
+
+
 }
