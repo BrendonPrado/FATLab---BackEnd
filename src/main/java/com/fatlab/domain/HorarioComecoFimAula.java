@@ -3,6 +3,7 @@ package com.fatlab.domain;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -41,7 +42,7 @@ public class HorarioComecoFimAula implements Serializable{
 	private String horaFim;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="horarioComecoFimAula")
+	@OneToMany(mappedBy="horarioComecoFimAula", orphanRemoval = true)
 	private Set<Reserva> reserva;
 
 

@@ -70,11 +70,12 @@ public class DBService {
 		materia.addReserva(reserva);
 		prof.addMateria(materia);
 
+		labRepository.save(lab);
 
+
+		horarioComecoFimAulaRepository.save(horarioComecoFimAula);
 		materiaRepository.save(materia);
 		usuarioRepository.saveAll(Arrays.asList(a1,prof));
-		horarioComecoFimAulaRepository.save(horarioComecoFimAula);
-		labRepository.save(lab);
 		reservaRepository.save(reserva);
 
 		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",false);

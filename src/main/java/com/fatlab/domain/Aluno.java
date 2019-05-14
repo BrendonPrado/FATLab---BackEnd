@@ -36,7 +36,7 @@ public class Aluno extends Usuario {
 
 	public Aluno(Integer id, String nome, String email, String senha, boolean admin, String RA) {
 		super(id, nome, email, senha, admin,
-		Funcao.ALUNO);
+		Funcao.Aluno);
 		this.ra = RA;
 	}
 

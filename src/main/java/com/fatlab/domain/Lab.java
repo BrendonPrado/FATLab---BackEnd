@@ -38,7 +38,7 @@ public class Lab implements Serializable{
 	private Integer capacidade;
 
 	@JsonIgnore
-	@OneToMany(mappedBy="lab")
+	@OneToMany(mappedBy="lab", orphanRemoval=true)
 	private Set<Reserva> reservas = new HashSet<>();
 
 	public Lab(String numero,String capacidade){

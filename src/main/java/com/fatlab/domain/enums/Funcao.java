@@ -2,9 +2,9 @@ package com.fatlab.domain.enums;
 
 
 public enum Funcao {
-    ADMIN(1,"ROLE_ADMIN"),
-    PROFESSOR(2,"ROLE_PROFESSOR"),
-    ALUNO(3,"ROLE_ALUNO");
+    Admin(1,"ROLE_ADMIN"),
+    Professor(2,"ROLE_PROFESSOR"),
+    Aluno(3,"ROLE_ALUNO");
 
 
 	private int cod;

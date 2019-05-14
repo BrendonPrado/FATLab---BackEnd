@@ -123,41 +123,28 @@ public class UsuarioService {
 
 	public Usuario update(UsuarioDTO usuarioAtualizado, Integer id) {
 		Usuario usuario = find(id);
+
+		repo.deleteById(usuario.getId());
 		
 		usuario = alteraNivelUsuario(usuario, usuarioAtualizado);
-
-
-		if(usuario instanceof Aluno){
-			((Aluno)usuario).setRa(usuarioAtualizado.getMatricula());
-		}else{
-			((Professor)usuario).setMatricula(usuarioAtualizado.getMatricula());
-		}
-
 		return repo.save(usuario);
 	}
 
 
-	private Usuario alteraNivelUsuario(Usuario usuario, UsuarioDTO usuarioDTOAtualizado){
-		Set<Funcao> funcoes = usuario.getFuncao();
-		usuario.setFuncoes(new HashSet<Integer>());
-		
-		
+	private Usuario alteraNivelUsuario(Usuario usuario, UsuarioDTO usuarioDTOAtualizado){		
+
+		Usuario usuarioModificado;
 		if(isProfessor(usuarioDTOAtualizado)) {
-			usuario.addFuncao(Funcao.PROFESSOR);
+			usuarioModificado = new Professor(usuario.getId(),usuario.getNome(),usuario.getEmail(), usuario.getSenha(),usuarioDTOAtualizado.isAdmin(),usuarioDTOAtualizado.getMatricula());
 		}else {
-			usuario.addFuncao(Funcao.ALUNO);			
+			usuarioModificado = new Aluno(usuario.getId(),usuario.getNome(),usuario.getEmail(),usuario.getSenha(),usuarioDTOAtualizado.isAdmin(),usuarioDTOAtualizado.getMatricula());	
 		}
 
 		if(usuarioDTOAtualizado.isAdmin()){
-			usuario.addFuncao(Funcao.ADMIN);
+			usuarioModificado.addFuncao(Funcao.Admin);
 		}
 
-		if(!funcoes.containsAll(usuario.getFuncao())){
-			materiaService.UpdateToNullMateriasUsuario(funcoes, usuario);
-		}
-			
-
-		return usuario;
+		return usuarioModificado;
 	}
 
 	public boolean isAluno(UsuarioDTO usuarioDTO){
@@ -169,11 +156,11 @@ public class UsuarioService {
 	}
 
 	public boolean isAluno(Usuario usuario){
-		return usuario.getFuncao().contains(Funcao.ALUNO);
+		return usuario.getFuncao().contains(Funcao.Aluno);
 	}
 
 	public boolean isProfessor(Usuario usuario){
-		return usuario.getFuncao().contains(Funcao.PROFESSOR);
+		return usuario.getFuncao().contains(Funcao.Professor);
 	}
 
 

@@ -33,7 +33,7 @@ public abstract class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
 	private String nome;
@@ -43,9 +43,6 @@ public abstract class Usuario implements Serializable {
 
 	@JsonIgnore
 	private String senha;
-
-
-
 
 	@JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
@@ -61,7 +58,7 @@ public abstract class Usuario implements Serializable {
 		this.senha = senha;
 		addFuncao(func);
 		if(admin==true){
-			addFuncao(Funcao.ADMIN);
+			addFuncao(Funcao.Admin);
 		}
 	}
 

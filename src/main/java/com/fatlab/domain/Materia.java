@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,7 +49,7 @@ public class Materia implements Serializable {
 	private String turma;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="materia")
+	@OneToMany(mappedBy="materia",orphanRemoval = true,cascade = CascadeType.ALL)
 	private Set<Reserva> reservas = new HashSet<>();
 	
 	@Override

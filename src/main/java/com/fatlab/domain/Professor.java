@@ -25,11 +25,11 @@ public class Professor extends Usuario{
 	private String matricula;
 
 	@JsonIgnore
-	@OneToMany(mappedBy="professor",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="professor",fetch = FetchType.EAGER, cascade= CascadeType.ALL)
 	private List<Materia> materias = new ArrayList<>() ;
 
 	public Professor(Integer id, String nome, String email, String senha, boolean admin, String matricula) {
-		super(id, nome, email, senha, admin,Funcao.PROFESSOR);
+		super(id, nome, email, senha, admin,Funcao.Professor);
 		this.matricula = matricula;
 	}
 
