@@ -23,6 +23,7 @@ public class UsuarioNewDTOValidator implements ConstraintValidator<UsuarioNewDTO
 
 	@Autowired
 	private ProfessorRepository profRep;
+
 	@Override
 	public boolean isValid(UsuarioNewDTO value, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
@@ -33,7 +34,8 @@ public class UsuarioNewDTOValidator implements ConstraintValidator<UsuarioNewDTO
 		Aluno aluno = alunoRep.findAlunoByRa(value.getMatricula());
 		Professor prof = profRep.findProfessorByMatricula(value.getMatricula());
 		
-		boolean usuarioPreenchido = (aluno != null && aluno.getNome() != null) || (prof != null && prof.getNome() != null);
+		boolean usuarioPreenchido = (aluno != null && aluno.getUsuario().getNome() != null) 
+		|| (prof != null && prof.getUsuario().getNome() != null);
 		if(usuarioPreenchido ) {
 			list.add(new FieldMessage("matricula","este usuário já possui cadastro, insira um ra válido!"));
 		}

@@ -1,5 +1,6 @@
 package com.fatlab.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +17,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Professor extends Usuario{
+public class Professor implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
 	@Column(unique = true)
 	private String matricula;
@@ -28,8 +33,11 @@ public class Professor extends Usuario{
 	@OneToMany(mappedBy="professor",fetch = FetchType.EAGER, cascade= CascadeType.ALL)
 	private List<Materia> materias = new ArrayList<>() ;
 
+	@OneToOne(fetch = FetchType.EAGER)
+	private Usuario usuario;
+
 	public Professor(Integer id, String nome, String email, String senha, boolean admin, String matricula) {
-		super(id, nome, email, senha, admin,Funcao.Professor);
+		this.usuario = new Usuario(id, nome, email, senha, admin,Funcao.Professor);
 		this.matricula = matricula;
 	}
 

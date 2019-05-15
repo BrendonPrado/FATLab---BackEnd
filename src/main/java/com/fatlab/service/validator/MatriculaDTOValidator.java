@@ -6,24 +6,26 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.fatlab.domain.Admin;
 import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
-import com.fatlab.domain.Usuario;
 import com.fatlab.dto.MatriculaDTO;
 import com.fatlab.repositories.MateriaRepository;
-import com.fatlab.repositories.UsuarioRepository;
 import com.fatlab.resource.exception.FieldMessage;
+import com.fatlab.service.GenericService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MatriculaDTOValidator implements ConstraintValidator<MatriculaDTOValido, MatriculaDTO> {
 
+    @Autowired
+    GenericService<Professor> profService;
+
 
     @Autowired
-    private UsuarioRepository usuarioRepo;
+    GenericService<Aluno> alunoService;
 
+    
     @Autowired
     private MateriaRepository materiaRepository;
     
@@ -31,12 +33,14 @@ public class MatriculaDTOValidator implements ConstraintValidator<MatriculaDTOVa
     public boolean isValid(MatriculaDTO value, ConstraintValidatorContext context) {
         List<FieldMessage> list = new ArrayList<>();
         
-        Usuario usuario = usuarioRepo.findById(value.getUsuario_id()).get();
+        Aluno aluno = alunoService.find(value.getUsuario_id());
+        Professor professor = profService.find(value.getUsuario_id());
+
         Materia materia = materiaRepository.findById(value.getMateria_id()).get();
 
     
 
-        if(usuario == null || usuario instanceof Admin){
+        if(aluno == null && aluno == null ){
             list.add(new FieldMessage("usuario_id","Este usuario não existe ou não pode matricular em materias!"));
         }
 
@@ -44,14 +48,14 @@ public class MatriculaDTOValidator implements ConstraintValidator<MatriculaDTOVa
             list.add(new FieldMessage("materia_id","Esta materia não existe!"));
         }
 
-        if(usuario instanceof Aluno){
-            if(((Aluno)usuario).getMaterias().contains(materia)){
+        if(aluno.getMaterias().contains(materia)){
+            if(aluno.getMaterias().contains(materia)){
                 list.add(new FieldMessage("materia_id","Este usuário já está matriculado nesta materia"));
             }
         }
 
-        if(usuario instanceof Professor){
-            if(((Professor)usuario).getMaterias().contains(materia)){
+        if(aluno.getMaterias().contains(materia)){
+            if(professor.getMaterias().contains(materia)){
                 list.add(new FieldMessage("materia_id","Este usuário já está matriculado nesta materia"));
             }
         }

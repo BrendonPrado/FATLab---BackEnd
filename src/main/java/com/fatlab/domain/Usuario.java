@@ -28,12 +28,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Usuario implements Serializable {
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	private String nome;

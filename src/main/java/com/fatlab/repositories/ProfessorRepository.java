@@ -1,10 +1,13 @@
 package com.fatlab.repositories;
 
 import com.fatlab.domain.Professor;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.fatlab.domain.Usuario;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
+public interface ProfessorRepository extends GenericRepository<Professor> {
     Professor findProfessorByMatricula(String matricula);
+
+    Professor findByUsuario(Usuario usuario);
 }

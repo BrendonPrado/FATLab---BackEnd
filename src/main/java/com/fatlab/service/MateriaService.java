@@ -4,28 +4,34 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.fatlab.repositories.MateriaRepository;
 import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
-import com.fatlab.domain.Usuario;
-import com.fatlab.domain.enums.Funcao;
 import com.fatlab.dto.MateriaDTO;
 import com.fatlab.dto.MatriculaDTO;
-import com.fatlab.dto.UsuarioDTO;
+import com.fatlab.repositories.MateriaRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 @Service
 public class MateriaService {
 
-	@Autowired 
-	private MateriaRepository repo;
+
+
 	
 	@Autowired
+	private AlunoService alunoService;
+
+	@Autowired
+	private ProfessorService profService;
+
+	@Autowired
 	private UsuarioService usuarioService;
+
+	@Autowired 
+	private MateriaRepository repo;
 	
 	public Materia find(Integer id) {
 		Optional<Materia> materia = repo.findById(id);
@@ -42,12 +48,13 @@ public class MateriaService {
 	}
 	
 	public boolean matriculaProfessor(MatriculaDTO matricula) {
+		Professor professor = profService.findByUsuario(usuarioService.find(matricula.getUsuario_id()));
+
 		try {
-			Professor professor = (Professor) usuarioService.find(matricula.getUsuario_id());
 			Materia materia = repo.findById(matricula.getMateria_id()).get();
 			professor.addMateria(materia);
 			materia.setProfessor(professor);
-			usuarioService.save(professor);
+			profService.save(professor);
 			save(materia);
 			return true;
 		}catch (Exception e) {
@@ -56,12 +63,15 @@ public class MateriaService {
 	}
 	
 	public boolean matriculaAluno(MatriculaDTO matricula) {
+
+		Aluno aluno = alunoService.findByUsuario(usuarioService.find(matricula.getUsuario_id()));
+
+
 		try {
-			Aluno aluno = (Aluno) usuarioService.find(matricula.getUsuario_id());
 			Materia materia = repo.findById(matricula.getMateria_id()).get();
 			aluno.addMateria(materia);
 			materia.addAlunos(aluno);
-			usuarioService.save(aluno);
+			alunoService.save(aluno);
 			save(materia);
 			return true;
 		}catch (Exception e) {
@@ -78,11 +88,5 @@ public class MateriaService {
 		return repo.findAll();
 	}
 
-	public List<Materia> materiasUsuario(Usuario usuario) {
-		if(usuario instanceof Aluno){
-			return repo.findByAlunos(usuario);
-		}else{
-			return repo.findByProfessor(usuario);
-		}
-	}
+	
 }

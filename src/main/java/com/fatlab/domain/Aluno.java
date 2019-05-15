@@ -1,14 +1,19 @@
 package com.fatlab.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 import com.fatlab.domain.enums.Funcao;
 
@@ -20,10 +25,15 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Aluno extends Usuario {
+public class Aluno implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
 	@Column(unique = true)
 	private String ra;
 
@@ -33,11 +43,12 @@ public class Aluno extends Usuario {
 	inverseJoinColumns=@JoinColumn(name="materia_id"))
 	private List<Materia> materias = new ArrayList<>();
 
+	@OneToOne
+	private Usuario usuario;
 
-	public Aluno(Integer id, String nome, String email, String senha, boolean admin, String RA) {
-		super(id, nome, email, senha, admin,
-		Funcao.Aluno);
-		this.ra = RA;
+	public Aluno(Integer id_usuario, String nome, String email, String senha, boolean admin, String RA) {
+		this.usuario = new Usuario(id_usuario, nome, email, senha, admin,Funcao.Aluno);
+			this.ra = RA;
 	}
 
 	public void addMateria(Materia materia){

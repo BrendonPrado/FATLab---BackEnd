@@ -1,10 +1,16 @@
 package com.fatlab.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
+import com.fatlab.domain.Professor;
 import com.fatlab.domain.Usuario;
+import com.fatlab.domain.enums.Funcao;
+import com.fatlab.service.AlunoService;
 import com.fatlab.service.MateriaService;
+import com.fatlab.service.ProfessorService;
 import com.fatlab.service.UserService;
 import com.fatlab.service.UsuarioService;
 
@@ -26,7 +32,10 @@ public class AuthResource{
     private UsuarioService usuarioService;
 
     @Autowired
-    private MateriaService materiaService;
+    private ProfessorService profService;
+
+    @Autowired
+    private AlunoService alunoService;
    
 
     @Secured({"ROLE_ALUNO","ROLE_PROFESSOR","ROLE_ADMIN"})
@@ -37,12 +46,21 @@ public class AuthResource{
         return ResponseEntity.ok().body(usuario);
 
     }
+
     @Secured({"ROLE_ALUNO","ROLE_PROFESSOR"})
     @RequestMapping(value = "/me/materias",method = RequestMethod.GET)
     public ResponseEntity<List<Materia>> minhasMaterias(){
+
         String email = service.authenticated().getUsername();
         Usuario usuario = usuarioService.findByEmail(email);
-        List<Materia> materias = materiaService.materiasUsuario(usuario);
+        List<Materia> materias = new ArrayList<Materia>();
+        
+        if(usuario.getFuncao().contains(Funcao.Aluno)){
+            materias = alunoService.findByUsuario(usuario).getMaterias();
+        }else if(usuario.getFuncao().contains(Funcao.Professor)){
+            materias = profService.findByUsuario(usuario).getMaterias();
+        }
+        
         return ResponseEntity.ok().body(materias);
     }
 }

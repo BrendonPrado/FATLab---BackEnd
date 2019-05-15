@@ -1,11 +1,6 @@
 package com.fatlab.service;
 
-import java.util.Arrays;
 import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import com.fatlab.domain.Admin;
 import com.fatlab.domain.Aluno;
@@ -19,14 +14,25 @@ import com.fatlab.repositories.HorarioComecoFimAulaRepository;
 import com.fatlab.repositories.LabRepository;
 import com.fatlab.repositories.MateriaRepository;
 import com.fatlab.repositories.ReservaRepository;
-import com.fatlab.repositories.UsuarioRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DBService {
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
+		
+		@Autowired
+		ProfessorService profService;
+		
+
+		@Autowired 
+		AlunoService alunoService;
+
+
+		@Autowired
+		AdminService admService;
+
 	@Autowired
 	private MateriaRepository materiaRepository;
 	
@@ -63,7 +69,10 @@ public class DBService {
 
 		Reserva reserva = new Reserva(new Date(),lab, horarioComecoFimAula, materia);
 
-		usuarioRepository.saveAll(Arrays.asList(a1,prof,adm));
+		alunoService.save(a1);
+		profService.save(prof);
+		admService.save(adm);
+
 
 
 
@@ -75,7 +84,10 @@ public class DBService {
 
 		horarioComecoFimAulaRepository.save(horarioComecoFimAula);
 		materiaRepository.save(materia);
-		usuarioRepository.saveAll(Arrays.asList(a1,prof));
+
+		alunoService.save(a1);
+		profService.save(prof);
+		
 		reservaRepository.save(reserva);
 
 		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",false);
