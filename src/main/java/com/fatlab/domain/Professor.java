@@ -45,5 +45,10 @@ public class Professor implements Serializable{
 		this.materias.add(materia);
 	}
 
+	public Professor(Usuario usuario, String matricula) {
+		this.usuario = usuario;
+		this.matricula = matricula;
+	}
+
 	
 }

@@ -25,4 +25,13 @@ public class ProfessorService  extends GenericServiceImpl<Professor>{
 	public Professor findByUsuario(Usuario usuario) {
 		return ((ProfessorRepository) this.repo).findByUsuario(usuario);
 	}
+
+	public Professor findProfessorByMatricula(String matricula) {
+		return ((ProfessorRepository) this.repo).findProfessorByMatricula(matricula);
+	}
+
+	public void deleteByUsuario(Usuario usuario) {
+        ((ProfessorRepository) this.repo).deleteByUsuario(usuario);
+	}
+
 }

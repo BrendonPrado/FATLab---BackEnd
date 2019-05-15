@@ -1,6 +1,7 @@
 
 package com.fatlab.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +14,6 @@ import com.fatlab.domain.enums.Funcao;
 import com.fatlab.dto.AdminDTO;
 import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
-import com.fatlab.repositories.AlunoRepository;
-import com.fatlab.repositories.ProfessorRepository;
 import com.fatlab.repositories.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,10 @@ public class UsuarioService {
 	private UsuarioRepository repo;
 
 	@Autowired
-	private AlunoRepository alunoRepository;
+	private AlunoService alunoService;
 
 	@Autowired
-	private ProfessorRepository professorRepository;
+	private ProfessorService profService;
 
 	@Autowired
 	private MateriaService materiaService;
@@ -77,17 +76,17 @@ public class UsuarioService {
 	}
 
 	private boolean froNewAluno(UsuarioNewDTO usuarioNewDTO){
-			Aluno aluno = alunoRepository.findAlunoByRa(usuarioNewDTO.getMatricula());
+			Aluno aluno = alunoService.findAlunoByRa(usuarioNewDTO.getMatricula());
 			return aluno != null;
 	}
 
 	private Usuario fromNewDTO(UsuarioNewDTO usuarioNewDTO) {
 		Usuario usuario;
 		if(froNewAluno(usuarioNewDTO)){
-			usuario = alunoRepository
+			usuario = alunoService
 			.findAlunoByRa(usuarioNewDTO.getMatricula()).getUsuario();
 		}else{
-			usuario = professorRepository
+			usuario = profService
 			.findProfessorByMatricula(usuarioNewDTO.getMatricula()).getUsuario();
 		}
 		usuario.setNome(usuarioNewDTO.getNome());
@@ -102,7 +101,7 @@ public class UsuarioService {
 	}
 
 	public void delete(Integer id) {
-		Professor usuario = professorRepository.findById(id).orElse(null);
+		Professor usuario = profService.find(id);
 		if(usuario!=null){
 			usuario.getMaterias().forEach( materia -> {
 				materia.setProfessor(null);
@@ -116,8 +115,8 @@ public class UsuarioService {
 	}
 
 	public List<Materia> getMaterias(Usuario usuario) {
-		Aluno aluno = this.alunoRepository.findById(usuario.getId()).get();
-		Professor professor = this.professorRepository.findById(usuario.getId()).get();
+		Aluno aluno = this.alunoService.find(usuario.getId());
+		Professor professor = this.profService.find(usuario.getId());
 		if(aluno != null){
 			return aluno.getMaterias();
 		}else{
@@ -125,7 +124,7 @@ public class UsuarioService {
 		}
 	}
 
-	public Usuario update(UsuarioDTO usuarioAtualizado, Integer id) {
+	public Usuario 	update(UsuarioDTO usuarioAtualizado, Integer id) {
 		Usuario usuario = find(id);
 
 		if(isProfessor(usuarioAtualizado) && isAluno(usuario)){
@@ -133,48 +132,51 @@ public class UsuarioService {
 		}else if(isAluno(usuarioAtualizado) && isProfessor(usuario)){
 			usuario = alteraNivelUsuario(usuario, usuarioAtualizado);
 		}else{
-			
-			if(usuarioAtualizado.isAdmin() && !usuario.getFuncao().contains(Funcao.Admin)){
+			boolean isAdm = (usuarioAtualizado.isAdmin() && !usuario.getFuncao().contains(Funcao.Admin)) 
+			? true : false;
+
+			if(isAdm){
 				usuario.addFuncao(Funcao.Admin);
-			} else if(!usuarioAtualizado.isAdmin() && usuario.getFuncao().contains(Funcao.Admin)){
-				usuario.getFuncao().remove(Funcao.Admin);
+			} else if(!isAdm){
+				usuario.getFuncoes().remove(Funcao.Admin.getCod());
 			}
 
 			if(isAluno(usuario)){
-				Aluno aluno = alunoRepository.findByUsuario(usuario);
-				if(aluno.getRa().equals(usuarioAtualizado.getMatricula())){
+				Aluno aluno = alunoService.findByUsuario(usuario);
+				if(!aluno.getRa().equals(usuarioAtualizado.getMatricula())){
 					aluno.setRa(usuarioAtualizado.getMatricula());
 				}
 			}
 			else if(isProfessor(usuario)){
-				Professor professor = professorRepository.findByUsuario(usuario);
-				if(professor.getMatricula().equals(usuarioAtualizado.getMatricula())){
+				Professor professor = profService.findByUsuario(usuario);
+				if(!professor.getMatricula().equals(usuarioAtualizado.getMatricula())){
 					professor.setMatricula(usuarioAtualizado.getMatricula());
 				}	
 			}
 
 		}
-		usuario = alteraNivelUsuario(usuario, usuarioAtualizado);
 		return repo.save(usuario);
 	}
 
 
 	private Usuario alteraNivelUsuario(Usuario usuario, UsuarioDTO usuarioDTOAtualizado){		
 
-		Usuario usuarioModificado;
+		usuario.setFuncoes(new HashSet<Integer>());
+
 		if(isProfessor(usuarioDTOAtualizado)) {
-			alunoRepository.deleteById(usuario.getId());
-			usuarioModificado = new Professor(usuario.getId(),usuario.getNome(),usuario.getEmail(), usuario.getSenha(),usuarioDTOAtualizado.isAdmin(),usuarioDTOAtualizado.getMatricula()).getUsuario();
+			alunoService.delete(alunoService.findByUsuario(usuario));
+			Professor professor = new Professor(usuario.getId(),usuario.getNome(),usuario.getEmail(), usuario.getSenha(),usuarioDTOAtualizado.isAdmin(),usuarioDTOAtualizado.getMatricula());
+			professor = profService.save(professor);
+			usuario = professor.getUsuario();
+
 		}else {
-			professorRepository.deleteById(usuario.getId());
-			usuarioModificado = new Aluno(usuario.getId(),usuario.getNome(),usuario.getEmail(),usuario.getSenha(),usuarioDTOAtualizado.isAdmin(),usuarioDTOAtualizado.getMatricula()).getUsuario();	
+			profService.delete(profService.findByUsuario(usuario));
+			Aluno aluno = new Aluno(null,usuario.getNome(),usuario.getEmail(),usuario.getSenha(),usuarioDTOAtualizado.isAdmin(),usuarioDTOAtualizado.getMatricula());
+			aluno = alunoService.save(aluno);
+			usuario = aluno.getUsuario();
 		}
 
-		if(usuarioDTOAtualizado.isAdmin()){
-			usuarioModificado.addFuncao(Funcao.Admin);
-		}
-
-		return usuarioModificado;
+		return usuario;
 	}
 
 	public boolean isAluno(UsuarioDTO usuarioDTO){
@@ -192,7 +194,4 @@ public class UsuarioService {
 	public boolean isProfessor(Usuario usuario){
 		return usuario.getFuncao().contains(Funcao.Professor);
 	}
-
-
-
 }

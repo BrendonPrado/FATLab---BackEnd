@@ -14,4 +14,6 @@ public interface AlunoRepository  extends GenericRepository<Aluno> {
     Aluno findByUsuario(Usuario usuario);
 
     boolean deleteByUsuario(Usuario usuario);
+
+	Aluno findByUsuarioId(Integer usuario);
 }

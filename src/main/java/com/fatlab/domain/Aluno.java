@@ -55,6 +55,11 @@ public class Aluno implements Serializable {
 		this.materias.add(materia);
 	}
 
+	public Aluno(Usuario usuario, String ra) {
+		this.usuario = usuario;
+		this.ra = ra;
+	}
+
 
 
 

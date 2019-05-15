@@ -22,7 +22,20 @@ public class AlunoService extends GenericServiceImpl<Aluno> {
         this.UsuarioService.save(obj.getUsuario());
         return super.save(obj);
     }
+
 	public Aluno findByUsuario(Usuario usuario) {
 		return ((AlunoRepository) this.repo).findByUsuario(usuario);
+    }
+    
+    public Aluno findByUsuarioId(Integer usuario) {
+		return ((AlunoRepository) this.repo).findByUsuarioId(usuario);
+	}
+
+	public  void deleteByUsuario(Usuario usuario) {
+      ((AlunoRepository)this.repo).deleteByUsuario(usuario);
+	}
+
+	public Aluno findAlunoByRa(String matricula) {
+		return null;
 	}
 }

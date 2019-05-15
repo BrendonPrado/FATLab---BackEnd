@@ -3,13 +3,10 @@ package com.fatlab.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
-import com.fatlab.domain.Professor;
 import com.fatlab.domain.Usuario;
 import com.fatlab.domain.enums.Funcao;
 import com.fatlab.service.AlunoService;
-import com.fatlab.service.MateriaService;
 import com.fatlab.service.ProfessorService;
 import com.fatlab.service.UserService;
 import com.fatlab.service.UsuarioService;
@@ -60,7 +57,7 @@ public class AuthResource{
         }else if(usuario.getFuncao().contains(Funcao.Professor)){
             materias = profService.findByUsuario(usuario).getMaterias();
         }
-        
+
         return ResponseEntity.ok().body(materias);
     }
 }

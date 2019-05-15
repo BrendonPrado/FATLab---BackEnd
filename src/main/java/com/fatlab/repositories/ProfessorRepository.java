@@ -10,4 +10,6 @@ public interface ProfessorRepository extends GenericRepository<Professor> {
     Professor findProfessorByMatricula(String matricula);
 
     Professor findByUsuario(Usuario usuario);
+
+	void deleteByUsuario(Usuario usuario);
 }

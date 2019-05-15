@@ -23,6 +23,11 @@ public class GenericServiceImpl<T>  implements GenericService<T>{
         return repo.save(obj);
     }
 
+    @Override
+    public void delete(T obj) {
+        repo.delete(obj);
+    }
+
  
     
 }
