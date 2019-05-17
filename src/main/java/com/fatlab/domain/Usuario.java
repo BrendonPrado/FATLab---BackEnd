@@ -27,11 +27,11 @@ import lombok.Setter;
 @Entity
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String nome;
 
 	@Column(unique = true)
@@ -41,30 +41,39 @@ public class Usuario implements Serializable {
 	private String senha;
 
 	@JsonIgnore
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "ACESSO_USUARIOS")
-    private Set<Integer> funcoes = new HashSet<>(  );
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "ACESSO_USUARIOS")
+	private Set<Integer> funcoes = new HashSet<>();
 
-	
-
-	public Usuario(Integer id, String nome, String email, String senha, boolean admin,Funcao func) {
+	public Usuario(Integer id, String nome, String email, String senha, boolean admin, Funcao func) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 		addFuncao(func);
-		if(admin==true){
+		if (admin == true) {
 			addFuncao(Funcao.Admin);
 		}
 	}
 
 	public Set<Funcao> getFuncao() {
-		return funcoes.stream().map( x -> Funcao.toEnum(x) ).collect( Collectors.toSet() );}
+		return funcoes.stream().map(x -> Funcao.toEnum(x)).collect(Collectors.toSet());
+	}
 
-	public void addFuncao(Funcao func){
+	public void addFuncao(Funcao func) {
 		this.funcoes.add(func.getCod());
 	}
 
+	public boolean isAluno() {
+		return this.getFuncao().contains(Funcao.Aluno);
+	}
 
+	public boolean isProfessor() {
+		return this.getFuncao().contains(Funcao.Professor);
+	}
+
+	public boolean isAdmin() {
+		return this.getFuncao().contains(Funcao.Admin);
+	}
 
 }

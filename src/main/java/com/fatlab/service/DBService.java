@@ -9,7 +9,6 @@ import com.fatlab.domain.Lab;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
 import com.fatlab.domain.Reserva;
-import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.repositories.HorarioComecoFimAulaRepository;
 import com.fatlab.repositories.LabRepository;
 import com.fatlab.repositories.MateriaRepository;
@@ -51,9 +50,6 @@ public class DBService {
 	@Autowired
 	private HoraService horaService;
 
-	@Autowired
-	private UsuarioService usuarioService;
-
 	public void  instantiateTestDatabase() {
 
 		Aluno a1 = new Aluno(null,"batat","123",this.encoder.encode("123"),true,"62616616126616");
@@ -89,11 +85,6 @@ public class DBService {
 		profService.save(prof);
 		
 		reservaRepository.save(reserva);
-
-		UsuarioDTO usuarioDTO= new UsuarioDTO("7162616","Professor",false);
-
-		usuarioService.saveFromDTO(usuarioDTO);
-
 
 	}
 }

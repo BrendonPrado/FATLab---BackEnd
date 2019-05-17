@@ -33,7 +33,7 @@ public class Professor implements Serializable{
 	@OneToMany(mappedBy="professor",fetch = FetchType.EAGER, cascade= CascadeType.ALL)
 	private List<Materia> materias = new ArrayList<>() ;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne
 	private Usuario usuario;
 
 	public Professor(Integer id, String nome, String email, String senha, boolean admin, String matricula) {

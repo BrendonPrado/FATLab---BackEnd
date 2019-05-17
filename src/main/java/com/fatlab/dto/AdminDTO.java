@@ -1,6 +1,8 @@
 package com.fatlab.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fatlab.service.validator.EmailValid;
 
@@ -18,6 +20,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AdminDTO {
+
+    @NotNull
+    @Length(min=3)
+    @NotBlank
+    private String nome;
 
     @EmailValid
     @Email(message = "Deve ser um email válido")

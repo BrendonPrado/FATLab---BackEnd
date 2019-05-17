@@ -30,4 +30,12 @@ public class UsuarioDTO implements Serializable{
 		this.tipo = tipo;
 		this.admin = admin;
 	}
+
+	public boolean dtoIsAluno(){
+		return this.getTipo().equals("Aluno");
+	}
+
+	public boolean dtoIsProfessor(){
+		return this.getTipo().equals("Professor");
+	}
 }

@@ -1,4 +1,4 @@
-package com.fatlab.resource.exception;
+package com.fatlab.service.excetions;
 
 public class ObjectNotFoundException  extends RuntimeException{
 

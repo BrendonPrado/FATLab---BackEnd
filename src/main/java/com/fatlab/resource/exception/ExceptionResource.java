@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fatlab.service.excetions.AuthorizationException;
 import com.fatlab.service.excetions.DataIntegrityException;
+import com.fatlab.service.excetions.ObjectNotFoundException;
 
 @ControllerAdvice
 public class ExceptionResource {

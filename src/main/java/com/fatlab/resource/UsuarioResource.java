@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.fatlab.domain.Admin;
 import com.fatlab.domain.Usuario;
 import com.fatlab.service.UsuarioService;
 
@@ -19,76 +20,70 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/usuarios")
+@RequestMapping(value = "/usuarios")
 public class UsuarioResource {
-	
+
 	@Autowired
 	private UsuarioService service;
-	
 
-	
-	@Secured({"ROLE_ADMIN"})
-	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<Usuario> find(@PathVariable Integer id){
+	@Secured({ "ROLE_ADMIN" })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Usuario> find(@PathVariable Integer id) {
 		Usuario usuario = service.find(id);
 		return ResponseEntity.ok().body(usuario);
 	}
 
-	
 	@PostMapping(value = "/new")
-	public ResponseEntity<Void> saveNew(@RequestBody @Valid UsuarioNewDTO usuarioNewDTO){
-		Usuario usuario = service.saveFromNewDTO( usuarioNewDTO );
+	public ResponseEntity<Void> saveNew(@RequestBody @Valid UsuarioNewDTO usuarioNewDTO) {
+		Usuario usuario = service.saveFromNewDTO(usuarioNewDTO);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(usuario.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId())
+				.toUri();
 
-		return ResponseEntity.created( uri ).build();
-
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> save(@Valid @RequestBody UsuarioDTO usuarioDTO){
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> save(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+		Usuario usuario = service.saveFromDTO(usuarioDTO);
 
-		Usuario usuario = service.saveFromDTO( usuarioDTO );
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId())
+				.toUri();
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(usuario.getId()).toUri();
-
-		return ResponseEntity.created( uri ).build();
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Usuario>> findAll(){
-		List<Usuario> usuarios = service.findAll();
+	public ResponseEntity<List<Object>> findAll() {
+		List<Object> usuarios = service.findAllUsuariosComFuncao();
 		return ResponseEntity.ok().body(usuarios);
 	}
-	
-	@Secured({"ROLE_ADMIN"})
-	@RequestMapping(value="/{id}",method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id){
-		this.service.delete(id);
+
+	@Secured({ "ROLE_ADMIN" })
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		this.service.deleteUsuarioComFuncao(this.service.find(id));
 		return ResponseEntity.noContent().build();
 	}
 
-	@Secured({"ROLE_ADMIN"})
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping(value = "/new/admin")
-	public ResponseEntity<Void> saveAdmin(@Valid @RequestBody AdminDTO adm ){
-		
-		Usuario usuario = service.saveNewAdm(adm);
+	public ResponseEntity<Void> saveAdmin(@Valid @RequestBody AdminDTO adm) {
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(usuario.getId()).toUri();
-		
+		Admin usuario = service.saveNewAdm(adm);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId())
+				.toUri();
+
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void>  update(@RequestBody @Valid UsuarioDTO usuarioAtualizado, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@RequestBody @Valid UsuarioDTO usuarioAtualizado, @PathVariable Integer id) {
 		service.update(usuarioAtualizado, id);
-		return ResponseEntity.noContent(	).build();
+		return ResponseEntity.noContent().build();
 	}
-
 
 }
