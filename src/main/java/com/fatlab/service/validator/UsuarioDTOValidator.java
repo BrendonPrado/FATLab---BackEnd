@@ -42,7 +42,6 @@ public class UsuarioDTOValidator implements ConstraintValidator<UsuarioDTOValido
 		}
 		
 		if(!value.getTipo().equals("Aluno") && !value.getTipo().equals("Professor")) {
-			System.out.println(value.getTipo());
 			list.add(new FieldMessage("tipo","Por favor cadastre um tipo válido de usuario"));
 		}
 		

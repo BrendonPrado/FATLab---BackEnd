@@ -32,7 +32,7 @@ public class Lab implements Serializable{
 	private Integer id;
 	
 	@Column(unique = true,nullable = false)
-	private String numero;
+	private Integer numero;
 	
 	@Column(nullable = false)
 	private Integer capacidade;
@@ -41,10 +41,10 @@ public class Lab implements Serializable{
 	@OneToMany(mappedBy="lab", orphanRemoval=true)
 	private Set<Reserva> reservas = new HashSet<>();
 
-	public Lab(String numero,String capacidade){
+	public Lab(Integer numero,Integer capacidade){
 		super();
 		this.numero = numero;
-		this.capacidade = Integer.parseInt(capacidade) ;
+		this.capacidade = capacidade;
 	}
 
 	public void addReserva(Reserva reserva) {

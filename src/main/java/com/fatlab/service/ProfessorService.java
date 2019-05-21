@@ -4,7 +4,6 @@ import javax.transaction.Transactional;
 
 import com.fatlab.domain.Professor;
 import com.fatlab.domain.Usuario;
-import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.repositories.ProfessorRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package com.fatlab.service;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import com.fatlab.domain.Admin;
@@ -59,7 +60,9 @@ public class DBService {
 		Admin adm = new Admin(null,"batatãozinho","b@g.com",this.encoder.encode("123"));
 		Materia materia = new Materia("Algoritmos",prof,"A");
 
-		Lab lab = new Lab("301","30");
+		Materia materia123 = new Materia("BataTeste",null,"A");
+
+		Lab lab = new Lab(301,30);
 
 		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios( 3,"Diurno" );
 
@@ -79,7 +82,7 @@ public class DBService {
 
 
 		horarioComecoFimAulaRepository.save(horarioComecoFimAula);
-		materiaRepository.save(materia);
+		materiaRepository.saveAll(Arrays.asList(materia,materia123));
 
 		alunoService.save(a1);
 		profService.save(prof);

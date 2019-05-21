@@ -18,7 +18,7 @@ public class GenericServiceImpl<T> implements GenericService<T> {
     @Override
     public T find(Integer id) {
         return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException(
-            "Objeto não encontrado! Id"));
+            "Objeto não encontrado! Id: "+id));
     }
 
     @Override
@@ -36,6 +36,13 @@ public class GenericServiceImpl<T> implements GenericService<T> {
         return repo.findAll();
     }
 
- 
+    @Override
+    public void deleteById(Integer id) {
+        this.repo.deleteById(id);
+    }
+
+    private String typeOfT(T obj){
+        return obj.getClass().toString();
+    }
     
 }

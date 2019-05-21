@@ -1,6 +1,5 @@
 package com.fatlab.dto;
 
-import javax.validation.constraints.NotBlank;
 
 import com.fatlab.service.validator.LabDTOValido;
 
@@ -17,11 +16,10 @@ import lombok.Setter;
 public class LaboratorioDTO{
     
     @Type(type = "IntegerTypes")
-    @NotBlank()
-    private String numero;
+    private Integer numero;
 
     @Type(type = "IntegerTypes")
-    private String capacidade;
+    private Integer capacidade;
 
     
 }

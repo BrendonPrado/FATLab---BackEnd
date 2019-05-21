@@ -2,12 +2,11 @@ package com.fatlab.repositories;
 
 import com.fatlab.domain.Lab;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface LabRepository extends JpaRepository<Lab, Integer>{
+public interface LabRepository extends GenericRepository<Lab>{
 
-    Lab findByNumero(String numero) ;
+    Lab findByNumero(Integer numero) ;
 }

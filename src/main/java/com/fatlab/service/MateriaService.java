@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import com.fatlab.domain.Aluno;
 import com.fatlab.domain.Materia;
 import com.fatlab.domain.Professor;
@@ -15,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MateriaService {
+public class MateriaService extends GenericServiceImpl<Materia> {
 
 	@Autowired
 	private AlunoService alunoService;
@@ -29,14 +31,8 @@ public class MateriaService {
 	@Autowired
 	private MateriaRepository repo;
 
-	public Materia find(Integer id) {
-		Optional<Materia> materia = repo.findById(id);
-		return materia.orElseThrow(() -> new RuntimeException("Esse usuario nao existe"));
-	}
 
-	public Materia save(Materia materia) {
-		return repo.save(materia);
-	}
+	
 
 	public Materia fromDTO(MateriaDTO materia) {
 		Materia nova = new Materia(materia.getNome(), null, materia.getTurma());
@@ -44,14 +40,16 @@ public class MateriaService {
 	}
 
 	public boolean matriculaProfessor(MatriculaDTO matricula) {
-		Professor professor = profService.findByUsuario(usuarioService.find(matricula.getUsuario_id()));
+		Professor professor = profService.findByUsuarioId(matricula.getUsuario_id());
+
+		System.out.println(professor.getUsuario().getNome());
 
 		try {
-			Materia materia = repo.findById(matricula.getMateria_id()).get();
+			Materia materia = find(matricula.getMateria_id());
 			professor.addMateria(materia);
 			materia.setProfessor(professor);
-			profService.save(professor);
 			save(materia);
+			profService.save(professor);
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -83,4 +81,14 @@ public class MateriaService {
 		return repo.findAll();
 	}
 
+	public void update(Integer id, MateriaDTO materiaDTO) {
+		Materia materia = find(id);
+		setInfosByDTO(materia, materiaDTO);
+		save(materia);
+	}
+
+	private void setInfosByDTO(Materia materia, MateriaDTO materiaDTO) {
+		materia.setNome(materiaDTO.getNome());
+		materia.setTurma(materiaDTO.getTurma());
+	}
 }

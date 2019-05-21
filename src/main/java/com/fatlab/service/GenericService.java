@@ -14,4 +14,5 @@ public interface GenericService<T> {
     T save(T obj);
     void delete(T obj);
     List<T> findAll();
+    void deleteById(Integer id);
 }
