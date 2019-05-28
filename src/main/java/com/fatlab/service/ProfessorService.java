@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class ProfessorService extends GenericServiceImpl<Professor> {
 
 	@Autowired
-	UsuarioService usuarioService;
+	private UsuarioService usuarioService;
 
 	@Override
 	public Professor save(Professor obj) {

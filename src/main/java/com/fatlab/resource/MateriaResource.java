@@ -6,6 +6,12 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import com.fatlab.domain.Aluno;
+import com.fatlab.domain.Materia;
+import com.fatlab.dto.MateriaDTO;
+import com.fatlab.dto.MatriculaDTO;
+import com.fatlab.service.MateriaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -17,12 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.fatlab.domain.Aluno;
-import com.fatlab.domain.Materia;
-import com.fatlab.dto.MateriaDTO;
-import com.fatlab.dto.MatriculaDTO;
-import com.fatlab.service.MateriaService;
 
 @RestController
 
@@ -98,8 +98,16 @@ public class MateriaResource {
 
 	@Secured("ROLE_ADMIN")
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id, @RequestBody @Valid MateriaDTO materiaDTO) {
-		this.service.update(id, materiaDTO);
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		this.service.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@Secured("ROLE_PROFESSOR")
+	@RequestMapping(value="/professor",method=RequestMethod.PUT)
+	public ResponseEntity<Void> atualizaProf(@RequestBody @Valid MatriculaDTO matriculaDTO){
+		service.matriculaProfessor(matriculaDTO);
+	
 		return ResponseEntity.noContent().build();
 	}
 

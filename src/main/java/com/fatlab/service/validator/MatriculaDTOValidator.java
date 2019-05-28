@@ -42,9 +42,8 @@ public class MatriculaDTOValidator implements ConstraintValidator<MatriculaDTOVa
 
 
         if(req.getRequestURI().equals("/materias/professor")){
-            System.out.println("teste");
-            professor = profService.findByUsuarioId(value.getUsuario_id());
-            System.out.println(professor.getUsuario().getNome());
+            if(!req.getRequestURI().equals("PUT") && value.getUsuario_id() == null)
+                professor = profService.findByUsuarioId(value.getUsuario_id());
         }else  if(req.getRequestURI().equals("/materias/alunos")){
             aluno = alunoService.findByUsuarioId(value.getUsuario_id());
         }

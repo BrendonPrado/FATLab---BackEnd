@@ -1,9 +1,10 @@
 package com.fatlab.service;
 
+import com.fatlab.security.UserSS;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.fatlab.security.UserSS;
 @Service
 public class UserService {
     public  UserSS authenticated() {
@@ -13,4 +14,6 @@ public class UserService {
             return null;
         }
     }
+
+    
 }

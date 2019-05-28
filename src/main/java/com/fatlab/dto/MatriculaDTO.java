@@ -19,6 +19,7 @@ public class MatriculaDTO implements Serializable{/**
 
 	
 	private Integer usuario_id;
+	
 	private Integer materia_id;
 	
 	public MatriculaDTO(Integer usuario_id, Integer materia_id) {

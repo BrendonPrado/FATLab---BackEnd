@@ -1,14 +1,16 @@
 package com.fatlab.service;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import com.fatlab.domain.HorarioComecoFimAula;
 import com.fatlab.domain.enums.Turno;
+import com.fatlab.dto.ReservaDTO;
 import com.fatlab.repositories.HorarioComecoFimAulaRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 @Service
 public class HoraService {
@@ -51,12 +53,40 @@ public class HoraService {
 
         horario_fim.add(Calendar.MINUTE, 50);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        horario_comeco.set(Calendar.SECOND, 0);
+        horario_fim.set(Calendar.SECOND, 0);
 
-        return new HorarioComecoFimAula( turnoEnum,sdf.format(horario_comeco.getTime()),sdf.format(horario_fim.getTime()) );
+        horario_comeco.set(Calendar.MILLISECOND, 0);
+        horario_fim.set(Calendar.MILLISECOND, 0);
+
+        return new HorarioComecoFimAula(turnoEnum, horario_comeco.getTime(), horario_fim.getTime());
     }
 
     public HorarioComecoFimAula save(HorarioComecoFimAula horarioComecoFimAula){
         return repo.save( horarioComecoFimAula );
     }
+
+    public HorarioComecoFimAula findByHoraComeco(Date data){
+        System.out.println(data);
+        return this.repo.findByHoraComeco(data);
+    }
+
+	public HorarioComecoFimAula findByNumAula(Integer aula) {
+        System.out.println(aula);
+		return this.findByHoraComeco(this.DefinirHorarios(aula, "Diurno").getHoraComeco());
+	}
+
+    public HorarioComecoFimAula findOrCreateHorario(Integer num, ReservaDTO reservaDTO) {
+        HorarioComecoFimAula aula = DefinirHorarios(num, reservaDTO.getTurno());
+        HorarioComecoFimAula possivel = findByHoraComeco(aula.getHoraComeco());
+        if (possivel == null) {
+            return save(aula);
+        }
+        return possivel;
+    }
+
+	public HorarioComecoFimAula getHoraByDateNow() {
+        Date date = new Date();
+        return ((HorarioComecoFimAulaRepository) this.repo).findDateBetweenHoraComecoAndHoraFim(date);
+	}
 }

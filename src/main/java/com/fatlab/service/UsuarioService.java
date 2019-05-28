@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class UsuarioService extends GenericServiceImpl<Usuario> {
 
@@ -34,6 +35,7 @@ public class UsuarioService extends GenericServiceImpl<Usuario> {
 
 	@Autowired
 	private AdminService admService;
+
 
 	public Usuario findByEmail(String email) {
 		return ((UsuarioRepository) repo).findByEmail(email);
@@ -57,7 +59,7 @@ public class UsuarioService extends GenericServiceImpl<Usuario> {
 	}
 
 	public Admin saveNewAdm(AdminDTO newAdm) {
-		Admin adm = new Admin(null, newAdm.getNome(), newAdm.getEmail(), newAdm.getSenha());
+		Admin adm = new Admin(null, newAdm.getNome(), newAdm.getEmail(),this.encoder.encode(newAdm.getSenha()));
 		return admService.save(adm);
 	}
 
@@ -177,5 +179,20 @@ public class UsuarioService extends GenericServiceImpl<Usuario> {
 		professor = profService.save(professor);
 		usuario = professor.getUsuario();
 		return usuario;
+	}
+
+	public Usuario updateNewDTO(Integer id,UsuarioNewDTO usuarioNewDTO) {
+		Usuario usuario = find(id);
+		setInfosByNewDTO(usuarioNewDTO, usuario);
+
+		return save(usuario);
+	}
+
+	private void setInfosByNewDTO(UsuarioNewDTO usuarioNewDTO, Usuario usuario) {
+		usuario.setEmail(usuarioNewDTO.getEmail());
+		usuario.setNome(usuarioNewDTO.getNome());
+		if (usuarioNewDTO.getSenha() != null && !usuarioNewDTO.getSenha().equals("")) {
+			usuario.setSenha(this.encoder.encode(usuarioNewDTO.getSenha()));
+		}
 	}
 }

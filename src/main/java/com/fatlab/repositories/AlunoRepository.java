@@ -5,7 +5,6 @@ import com.fatlab.domain.Usuario;
 
 import org.springframework.stereotype.Repository;
 
-
 @Repository
 public interface AlunoRepository  extends GenericRepository<Aluno> {
 

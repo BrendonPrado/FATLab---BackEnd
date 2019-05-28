@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,7 +38,7 @@ public class Aluno implements Serializable {
 	@Column(unique = true)
 	private String ra;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinTable(name="Alunos_Materias",
 	joinColumns=@JoinColumn(name="aluno_id"),
 	inverseJoinColumns=@JoinColumn(name="materia_id"))

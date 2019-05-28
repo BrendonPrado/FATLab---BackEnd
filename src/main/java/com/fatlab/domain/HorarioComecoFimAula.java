@@ -1,25 +1,30 @@
 package com.fatlab.domain;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fatlab.domain.enums.Turno;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
-@Setter
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @NoArgsConstructor
 @Entity
 public class HorarioComecoFimAula implements Serializable{	
@@ -36,17 +41,21 @@ public class HorarioComecoFimAula implements Serializable{
 	@Enumerated(value = EnumType.STRING)
 	private Turno turno;
 	
-	private String horaComeco;
+	@Temporal(TemporalType.TIME)
+	@DateTimeFormat(pattern = "hh:mm")
+	private Date horaComeco;
 	
-	private String horaFim;
+	@Temporal(TemporalType.TIME)
+	@DateTimeFormat(pattern = "hh:mm")
+	private Date horaFim;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="horarioComecoFimAula", orphanRemoval = true)
-	private Set<Reserva> reserva;
+	@OneToMany(mappedBy="horarioComecoFimAula", fetch=FetchType.EAGER)
+	private Set<Reserva> reserva = new HashSet<>();
 
 
 	
-	public HorarioComecoFimAula(Turno turno,String horaComeco,String horaFim) {
+	public HorarioComecoFimAula(Turno turno,Date horaComeco,Date horaFim) {
 		this.turno = turno;
 		this.horaComeco = horaComeco;
 		this.horaFim = horaFim;

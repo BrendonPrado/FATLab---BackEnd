@@ -40,9 +40,4 @@ public class GenericServiceImpl<T> implements GenericService<T> {
     public void deleteById(Integer id) {
         this.repo.deleteById(id);
     }
-
-    private String typeOfT(T obj){
-        return obj.getClass().toString();
-    }
-    
 }

@@ -4,16 +4,16 @@ import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fatlab.service.excetions.AuthorizationException;
+import com.fatlab.service.excetions.DataIntegrityException;
+import com.fatlab.service.excetions.ObjectNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import com.fatlab.service.excetions.AuthorizationException;
-import com.fatlab.service.excetions.DataIntegrityException;
-import com.fatlab.service.excetions.ObjectNotFoundException;
 
 @ControllerAdvice
 public class ExceptionResource {
@@ -48,7 +48,7 @@ public class ExceptionResource {
 	@ExceptionHandler(AuthorizationException.class)
 	public ResponseEntity<StandardError> authorization(AuthorizationException e,HttpServletRequest request){
 		StandardError error = new StandardError(HttpStatus.UNAUTHORIZED.value(), e.getMessage(),Calendar.getInstance());
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
 
 	}
 }

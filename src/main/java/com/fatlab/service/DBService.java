@@ -1,6 +1,7 @@
 package com.fatlab.service;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.fatlab.domain.Admin;
@@ -21,27 +22,25 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DBService {
-		
-		@Autowired
-		ProfessorService profService;
-		
 
-		@Autowired 
-		AlunoService alunoService;
+	@Autowired
+	ProfessorService profService;
 
+	@Autowired
+	AlunoService alunoService;
 
-		@Autowired
-		AdminService admService;
+	@Autowired
+	AdminService admService;
 
 	@Autowired
 	private MateriaRepository materiaRepository;
-	
+
 	@Autowired
 	private ReservaRepository reservaRepository;
-	
+
 	@Autowired
 	private LabRepository labRepository;
-	
+
 	@Autowired
 	private HorarioComecoFimAulaRepository horarioComecoFimAulaRepository;
 
@@ -51,43 +50,52 @@ public class DBService {
 	@Autowired
 	private HoraService horaService;
 
-	public void  instantiateTestDatabase() {
+	@Autowired
+	private LabService labService;
 
-		Aluno a1 = new Aluno(null,"batat","123",this.encoder.encode("123"),true,"62616616126616");
+	public void instantiateTestDatabase() {
 
-		Professor prof = new Professor(null,"bata","ao@g.com",this.encoder.encode("batata"),true,"327636267");
+		Aluno a1 = new Aluno(null, "batat", "123", this.encoder.encode("123"), true, "62616616126616");
 
-		Admin adm = new Admin(null,"batatãozinho","b@g.com",this.encoder.encode("123"));
-		Materia materia = new Materia("Algoritmos",prof,"A");
+		Professor prof = new Professor(null, "bata", "ao@g.com", this.encoder.encode("batata"), true, "327636267");
 
-		Materia materia123 = new Materia("BataTeste",null,"A");
+		Admin adm = new Admin(null, "batatãozinho", "b@g.com", this.encoder.encode("123"));
+		Materia materia = new Materia("Algoritmos", prof, "A");
 
-		Lab lab = new Lab(301,30);
+		Materia materia123 = new Materia("BataTeste", null, "A");
 
-		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios( 3,"Diurno" );
+		Lab lab = new Lab(301, 30);
+		Lab lab2 = new Lab(303, 30);
+		Lab lab3 = new Lab(307, 30);
 
-		Reserva reserva = new Reserva(new Date(),lab, horarioComecoFimAula, materia);
+		HorarioComecoFimAula horarioComecoFimAula = horaService.DefinirHorarios(3, "Diurno");
+
+		Date d = new Date();
+
+		Reserva reserva = new Reserva(d, lab, horarioComecoFimAula, materia);
 
 		alunoService.save(a1);
 		profService.save(prof);
 		admService.save(adm);
 
-
-
-
 		materia.addReserva(reserva);
+
 		prof.addMateria(materia);
 
-		labRepository.save(lab);
-
+		labRepository.saveAll(Arrays.asList(lab, lab2, lab3));
 
 		horarioComecoFimAulaRepository.save(horarioComecoFimAula);
-		materiaRepository.saveAll(Arrays.asList(materia,materia123));
+		materiaRepository.saveAll(Arrays.asList(materia, materia123));
 
 		alunoService.save(a1);
 		profService.save(prof);
-		
-		reservaRepository.save(reserva);
 
+		reservaRepository.saveAll(Arrays.asList(reserva));
+
+		Date d2 = new Date();
+
+		Reserva reserva2 = new Reserva(d2, lab2, horarioComecoFimAula, materia);
+		reservaRepository.saveAll(Arrays.asList(reserva2));
+		System.out.println(Calendar.MAY);
 	}
 }

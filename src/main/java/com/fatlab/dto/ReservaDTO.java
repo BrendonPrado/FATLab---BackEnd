@@ -2,7 +2,9 @@ package com.fatlab.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import com.fatlab.service.validator.ReservaDTOValido;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ReservaDTOValido
 public class ReservaDTO implements Serializable{
 	
 	/**
@@ -20,7 +23,7 @@ public class ReservaDTO implements Serializable{
 
 	private Date diaMes;
 	
-	private Integer num_aula;
+	private Set<Integer> num_aula;
 
 	private String turno;
 

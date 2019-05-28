@@ -1,23 +1,29 @@
 package com.fatlab.resource;
 
+import java.net.URI;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import com.fatlab.domain.Admin;
+import com.fatlab.domain.Usuario;
 import com.fatlab.dto.AdminDTO;
 import com.fatlab.dto.UsuarioDTO;
 import com.fatlab.dto.UsuarioNewDTO;
+import com.fatlab.service.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import com.fatlab.domain.Admin;
-import com.fatlab.domain.Usuario;
-import com.fatlab.service.UsuarioService;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -85,5 +91,13 @@ public class UsuarioResource {
 		service.update(usuarioAtualizado, id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PutMapping(value = "/new/{id}")
+	public ResponseEntity<Void> updateNew(@PathVariable Integer id, @RequestBody @Valid UsuarioNewDTO usuarioNewDTO) {
+		service.updateNewDTO(id,usuarioNewDTO);
+		return ResponseEntity.noContent().build();
+	}
+
+	
 
 }

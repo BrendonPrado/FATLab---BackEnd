@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,9 @@ public class Materia implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+
+
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -49,7 +53,7 @@ public class Materia implements Serializable {
 	private String turma;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="materia",orphanRemoval = true,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="materia",orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Reserva> reservas = new HashSet<>();
 	
 	@Override
