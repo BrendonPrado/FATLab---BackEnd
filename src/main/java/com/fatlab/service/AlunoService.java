@@ -39,7 +39,7 @@ public class AlunoService extends GenericServiceImpl<Aluno> {
   }
 
   public Aluno findAlunoByRa(String matricula) {
-    return null;
+    return ((AlunoRepository) this.repo).findAlunoByRa(matricula);
   }
 
   @Transactional

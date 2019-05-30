@@ -14,9 +14,6 @@ public interface LabRepository extends GenericRepository<Lab>{
 
     Lab findByNumero(Integer numero) ;
 
-    @Query("select l from Lab l inner join l.reservas r where not r.diaMes = :diaMes and r.horarioComecoFimAula = :horario")
-    List<Lab> findDispLabs(Date diaMes, HorarioComecoFimAula horario);
-
     List<Lab> findByReservasIsNull();
     
     @Query("select l from Lab l inner join l.reservas r where  r.diaMes = :diaMes and r.horarioComecoFimAula = :horario")

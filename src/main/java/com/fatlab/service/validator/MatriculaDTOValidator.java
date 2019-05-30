@@ -41,14 +41,14 @@ public class MatriculaDTOValidator implements ConstraintValidator<MatriculaDTOVa
         Aluno aluno = null;
 
 
-        if(req.getRequestURI().equals("/materias/professor")){
-            if(!req.getRequestURI().equals("PUT") && value.getUsuario_id() == null)
-                professor = profService.findByUsuarioId(value.getUsuario_id());
-        }else  if(req.getRequestURI().equals("/materias/alunos")){
+        if(req.getRequestURI().equals("/materias/professor") && value.getUsuario_id()!=null){
+            professor = profService.findByUsuarioId(value.getUsuario_id());
+        }else  if(req.getRequestURI().equals("/materias/alunos") && value.getUsuario_id()!=null){
             aluno = alunoService.findByUsuarioId(value.getUsuario_id());
         }
-
+        
         Materia materia = materiaRepository.findById(value.getMateria_id()).get();
+
 
         if(materia == null){
             list.add(new FieldMessage("materia_id","Esta materia não existe!"));
@@ -65,9 +65,6 @@ public class MatriculaDTOValidator implements ConstraintValidator<MatriculaDTOVa
                 list.add(new FieldMessage("materia_id","Esta materia já tem professor!"));
             }
         }
-
-        
-
 
         for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();

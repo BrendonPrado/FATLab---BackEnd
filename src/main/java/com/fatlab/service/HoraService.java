@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 
 import com.fatlab.domain.HorarioComecoFimAula;
 import com.fatlab.domain.enums.Turno;
-import com.fatlab.dto.ReservaDTO;
 import com.fatlab.repositories.HorarioComecoFimAulaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ public class HoraService {
         if(turno.equals( "Diurno")) {
             turnoEnum = Turno.Diurno;
             horario_comeco.set( Calendar.HOUR_OF_DAY, 7);
-            horario_comeco.set(Calendar.MINUTE, 10);
+            horario_comeco.set(Calendar.MINUTE, 15);
             horario_fim.set( Calendar.HOUR_OF_DAY, 7);
-            horario_fim.set(Calendar.MINUTE, 10);
-            if(aula ==3) {
-                horario_comeco.add(Calendar.MINUTE, 25);
-                horario_fim.add(Calendar.MINUTE, 25);
+            horario_fim.set(Calendar.MINUTE, 15);
+            if(aula >= 3) {
+                horario_comeco.add(Calendar.MINUTE, 20);
+                horario_fim.add(Calendar.MINUTE, 20);
 
             }
         }else {
@@ -52,7 +51,6 @@ public class HoraService {
 
 
         horario_fim.add(Calendar.MINUTE, 50);
-
         horario_comeco.set(Calendar.SECOND, 0);
         horario_fim.set(Calendar.SECOND, 0);
 
@@ -67,17 +65,11 @@ public class HoraService {
     }
 
     public HorarioComecoFimAula findByHoraComeco(Date data){
-        System.out.println(data);
         return this.repo.findByHoraComeco(data);
     }
 
-	public HorarioComecoFimAula findByNumAula(Integer aula) {
-        System.out.println(aula);
-		return this.findByHoraComeco(this.DefinirHorarios(aula, "Diurno").getHoraComeco());
-	}
-
-    public HorarioComecoFimAula findOrCreateHorario(Integer num, ReservaDTO reservaDTO) {
-        HorarioComecoFimAula aula = DefinirHorarios(num, reservaDTO.getTurno());
+    public HorarioComecoFimAula findOrCreateHorario(Integer num, String turno) {
+        HorarioComecoFimAula aula = DefinirHorarios(num, turno);
         HorarioComecoFimAula possivel = findByHoraComeco(aula.getHoraComeco());
         if (possivel == null) {
             return save(aula);

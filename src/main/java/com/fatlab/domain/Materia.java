@@ -42,7 +42,7 @@ public class Materia implements Serializable {
 	
 	
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="professor_id")
 	private Professor professor;
 	

@@ -65,13 +65,14 @@ public class UsuarioService extends GenericServiceImpl<Usuario> {
 
 	private boolean froNewAluno(UsuarioNewDTO usuarioNewDTO) {
 		Aluno aluno = alunoService.findAlunoByRa(usuarioNewDTO.getMatricula());
+		System.out.println(aluno);
 		return aluno != null;
 	}
 
 	private Usuario fromNewDTO(UsuarioNewDTO usuarioNewDTO) {
 		Usuario usuario;
 
-		if (froNewAluno(usuarioNewDTO)) {
+		if (froNewAluno(usuarioNewDTO) == true) {
 			usuario = alunoService.findAlunoByRa(usuarioNewDTO.getMatricula()).getUsuario();
 		} else {
 			usuario = profService.findProfessorByMatricula(usuarioNewDTO.getMatricula()).getUsuario();

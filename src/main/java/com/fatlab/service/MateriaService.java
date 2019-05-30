@@ -45,7 +45,7 @@ public class MateriaService extends GenericServiceImpl<Materia> {
 	public boolean matriculaProfessor(MatriculaDTO matricula) {
 		Professor professor = null ;
 		if(matricula.getUsuario_id() != null){
-			professor = profService.find(matricula.getUsuario_id());
+			professor = profService.findByUsuarioId(matricula.getUsuario_id());
 		}
 		try {
 			Materia materia = find(matricula.getMateria_id());

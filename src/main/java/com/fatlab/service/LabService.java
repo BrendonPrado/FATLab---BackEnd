@@ -1,6 +1,5 @@
 package com.fatlab.service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -50,7 +49,7 @@ public class LabService extends GenericServiceImpl<Lab> {
         }
     }
 
-    public List<Lab> findAllLabsIndisponiveis(Date data, HorarioComecoFimAula horario) {
+    public List<Lab> findAllLabsComReserva(Date data, HorarioComecoFimAula horario) {
         List<Lab> labs = ((LabRepository) this.repo).findIndispLabs(data, horario);
         return labs;
     }
@@ -58,7 +57,7 @@ public class LabService extends GenericServiceImpl<Lab> {
     public List<Lab> getAllDispLabs(Date data, Set<Integer> aulasNum) {
         List<Lab> allLabs = findAll();
         for (Integer aula : aulasNum) {
-            List<Lab> labsIndisp = findAllLabsIndisponiveis(data, this.horaService.findByNumAula(aula));
+            List<Lab> labsIndisp = findAllLabsComReserva(data, this.horaService.findOrCreateHorario(aula,"Diurno"));
             labsIndisp.forEach(f -> {
                 allLabs.remove(f);
             });
@@ -66,39 +65,37 @@ public class LabService extends GenericServiceImpl<Lab> {
         return allLabs;
     }
 
-    public List<Lab> findAllLabsComReservaMesNosDiasDaSemana(int mes, Set<Integer> dias, Set<Integer> aulasNum) {
+    public List<Lab> findAllLabsDisponiveisNoMes(int mes, Set<Integer> dias, Set<Integer> aulasNum) {
 
         Set<Lab> labsagr = verificarDiasDoMesEmAlgumasAulas(mes, dias, aulasNum);
         return removerLabsFromAllList(labsagr);
 
     }
 
-    private Set<Lab> verificarDiasDoMesEmAlgumasAulas(int mes, Set<Integer> dias, Set<Integer> aulasNum) {
-        Set<Lab> labsagr = new HashSet<>();
+    public Set<Lab> verificarDiasDoMesEmAlgumasAulas(int mes, Set<Integer> dias, Set<Integer> aulasNum) {
         Calendar c = SetToInitialDate(mes);
-        List<Lab> labsUsados = new ArrayList<>();
+        Set<Lab> labsUsados = new HashSet<>();
 
         for (int i = 0; i < c.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
             if (dias.contains(c.get(Calendar.DAY_OF_WEEK))) {
-                for (Integer aula : aulasNum) {
-                    labsUsados.addAll(findAllLabsIndisponiveis(c.getTime(), this.horaService.findByNumAula(aula)));
+                  for (Integer aula : aulasNum) {
+                    labsUsados.addAll(findAllLabsComReserva(c.getTime(), this.horaService.findOrCreateHorario(aula,"Diurno")));
                 }
             }
-            labsUsados.forEach(f -> labsagr.add(f));
             c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
         }
-        return labsagr;
+        return labsUsados;
     }
 
-    private Calendar SetToInitialDate(int mes) {
+    public Calendar SetToInitialDate(int mes) {
         Calendar c = new GregorianCalendar();
         int diaHoje = c.get(Calendar.MONTH);
         if (mes == diaHoje) {
             c.set(Calendar.DAY_OF_MONTH, diaHoje);
         } else {
-            c.set(Calendar.DAY_OF_MONTH, c.getMinimum(Calendar.MONTH));
+            c.set(Calendar.DAY_OF_MONTH, c.getMinimum(Calendar.DAY_OF_MONTH));
         }
-        c.set(Calendar.DAY_OF_MONTH, c.getMinimum(Calendar.MONTH));
+        c.set(Calendar.MONTH, mes);
         return c;
     }
 
@@ -109,4 +106,13 @@ public class LabService extends GenericServiceImpl<Lab> {
             });
         return labs;
     }
+
+	public boolean labInLabs(Lab lab, Set<Lab> labs) {
+        for (Lab l : labs) {
+            if(l.getId().equals(lab.getId())){
+                return true;
+            }
+        }
+        return false;
+	}
 }

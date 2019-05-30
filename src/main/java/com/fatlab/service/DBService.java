@@ -1,7 +1,6 @@
 package com.fatlab.service;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 
 import com.fatlab.domain.Admin;
@@ -50,9 +49,6 @@ public class DBService {
 	@Autowired
 	private HoraService horaService;
 
-	@Autowired
-	private LabService labService;
-
 	public void instantiateTestDatabase() {
 
 		Aluno a1 = new Aluno(null, "batat", "123", this.encoder.encode("123"), true, "62616616126616");
@@ -96,6 +92,5 @@ public class DBService {
 
 		Reserva reserva2 = new Reserva(d2, lab2, horarioComecoFimAula, materia);
 		reservaRepository.saveAll(Arrays.asList(reserva2));
-		System.out.println(Calendar.MAY);
 	}
 }

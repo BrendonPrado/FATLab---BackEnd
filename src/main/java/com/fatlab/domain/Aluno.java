@@ -18,12 +18,10 @@ import javax.persistence.OneToOne;
 
 import com.fatlab.domain.enums.Funcao;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
 public class Aluno implements Serializable {

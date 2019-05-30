@@ -70,6 +70,7 @@ public class LabResource {
         return ResponseEntity.noContent().build();
     }
 
+    @Secured("ROLE_PROFESSOR")
     @GetMapping(value = "/disponivel/dia")
     public ResponseEntity<List<Lab>> findAllLabsDispDia(@RequestParam("data") Date data,
             @RequestParam("aulas") String aulas) {
@@ -78,15 +79,14 @@ public class LabResource {
         return ResponseEntity.ok().body(allLabs);
     }
 
-
+    @Secured("ROLE_PROFESSOR")
     @GetMapping(value = "/disponivel/mes")
     public ResponseEntity<List<Lab>> findAllLabsMes(@RequestParam("mes") Integer mes,@RequestParam("diasSemana") String dias ,
             @RequestParam("aulas") String aulas) {
         Set<Integer> aulasNum = this.UrlUtil.decodeIntList(aulas);
         Set<Integer> diasSemana = this.UrlUtil.decodeIntList(dias);
-        List<Lab> labs = this.service.findAllLabsComReservaMesNosDiasDaSemana(mes, diasSemana, aulasNum);
+        List<Lab> labs = this.service.findAllLabsDisponiveisNoMes(mes, diasSemana, aulasNum);
 
         return ResponseEntity.ok().body(labs);
     }
-
 }

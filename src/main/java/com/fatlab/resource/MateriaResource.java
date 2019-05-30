@@ -103,7 +103,7 @@ public class MateriaResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	@Secured("ROLE_PROFESSOR")
+	@Secured({"ROLE_ADMIN","ROLE_PROFESSOR"})
 	@RequestMapping(value="/professor",method=RequestMethod.PUT)
 	public ResponseEntity<Void> atualizaProf(@RequestBody @Valid MatriculaDTO matriculaDTO){
 		service.matriculaProfessor(matriculaDTO);

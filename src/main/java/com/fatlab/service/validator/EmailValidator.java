@@ -26,7 +26,10 @@ public class EmailValidator implements ConstraintValidator<EmailValid, String> {
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		String message =  "";
 		
-		String email = this.service.authenticated().getUsername();
+		String email = "";
+		if(this.service.authenticated() != null){
+			email = this.service.authenticated().getUsername();
+		}
 		Usuario usuario = usuarioService.findByEmail(email);
 
 		if(usuarioService.findByEmail(value) != null && !email.equals(usuario.getEmail())) {
