@@ -5,7 +5,7 @@
 
 //Materia
 - post -> /materias ### cria uma nova materia no sistema
-- get -> /materias  ### retorna todas as materias no sistema  obs: não feito
+- get -> /materias  ### retorna todas as materias no sistema
 - get -> /materias/{id} ### retorna uma materia pelo id
 
 //aluno e professor -> Materia
@@ -15,4 +15,4 @@
 
 
 //reservas
-- post -> /reservas ### cria nova reserva (passar  diaMes num_aula turno lab_id materia_id) obs: não feito.
+- post -> /reservas ### cria nova reserva (passar  diaMes num_aula turno lab_id materia_id)
